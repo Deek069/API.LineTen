@@ -7,8 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.2.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
-	  <InternalsVisibleTo Include="LineTen.IntegrationTests"/>  
+	  <InternalsVisibleTo Include="LineTen.IntegrationTests" />  
   </ItemGroup>
 
 	
