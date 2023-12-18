@@ -31,10 +31,10 @@ namespace Application.LineTen.Tests.Orders.Queries
             var result = await _handler.Handle(query, default);
 
             // Assert
-            var expectedResult = new List<OrderDTO> { OrderDTO.FromOrder(_ordersTestData.Order1),
-                                                      OrderDTO.FromOrder(_ordersTestData.Order2),
-                                                      OrderDTO.FromOrder(_ordersTestData.Order3),
-                                                      OrderDTO.FromOrder(_ordersTestData.Order4) };
+            var expectedResult = new List<OrderSummaryDTO> { OrderSummaryDTO.FromOrder(_ordersTestData.Order1),
+                                                             OrderSummaryDTO.FromOrder(_ordersTestData.Order2),
+                                                             OrderSummaryDTO.FromOrder(_ordersTestData.Order3),
+                                                             OrderSummaryDTO.FromOrder(_ordersTestData.Order4) };
             Assert.Equal(expected: expectedResult, actual: result);
         }
     }

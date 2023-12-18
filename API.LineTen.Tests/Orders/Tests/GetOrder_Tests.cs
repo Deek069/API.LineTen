@@ -1,11 +1,11 @@
 ﻿using API.LineTen.Controllers;
 using Application.LineTen.Orders.DTOs;
-using Application.LineTen.Orders.Queries.GetOrderByID;
 using Domain.LineTen.Orders;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using MediatR;
+using Application.LineTen.Orders.Queries.GetOrderSummary;
 
 namespace API.LineTen.Tests.Orders.Tests
 {
@@ -28,16 +28,16 @@ namespace API.LineTen.Tests.Orders.Tests
         public async Task GetOrder_Should_ReturnOrder_WithValidID()
         {
             // Arrange
-            var expectedOrder = OrderDTO.FromOrder(_OrdersTestData.Order1);
-            _mockMediator.Setup(x => x.Send(It.IsAny<GetOrderByIDQuery>(), It.IsAny<CancellationToken>()))
+            var expectedOrder = OrderSummaryDTO.FromOrder(_OrdersTestData.Order1);
+            _mockMediator.Setup(x => x.Send(It.IsAny<GetOrderSummaryQuery>(), It.IsAny<CancellationToken>()))
                         .ReturnsAsync(expectedOrder);
 
             // Act
-            var result = (ActionResult)await _OrdersController.GetByID(_OrdersTestData.Order1.ID.value);
+            var result = (ActionResult)await _OrdersController.GetOrderSummary(_OrdersTestData.Order1.ID.value);
 
             // Assert
             var actionResult = Assert.IsType<OkObjectResult>(result);
-            var Order = (OrderDTO)actionResult.Value;
+            var Order = (OrderSummaryDTO)actionResult.Value;
             Assert.Equal(expected: expectedOrder, actual: Order);
         }
 
@@ -45,11 +45,11 @@ namespace API.LineTen.Tests.Orders.Tests
         public async Task GetOrder_Should_ReturnNotFound_WithInvalidID()
         {
             // Arrange
-            _mockMediator.Setup(x => x.Send(It.IsAny<GetOrderByIDQuery>(), It.IsAny<CancellationToken>()))
+            _mockMediator.Setup(x => x.Send(It.IsAny<GetOrderSummaryQuery>(), It.IsAny<CancellationToken>()))
                         .ReturnsAsync(valueFunction: () => null);
 
             // Act
-            var result = (ActionResult)await _OrdersController.GetByID(OrderID.CreateUnique().value);
+            var result = (ActionResult)await _OrdersController.GetOrderSummary(OrderID.CreateUnique().value);
 
             // Assert
             var actionResult = Assert.IsType<NotFoundResult>(result);

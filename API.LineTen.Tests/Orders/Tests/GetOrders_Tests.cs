@@ -27,10 +27,10 @@ namespace API.LineTen.Tests.Orders.Tests
         public async Task GetOrders_Should_ReturnAllOrders()
         {
             // Arrange
-            var expectedData = new List<OrderDTO> { OrderDTO.FromOrder(_OrdersTestData.Order1),
-                                                    OrderDTO.FromOrder(_OrdersTestData.Order2),
-                                                    OrderDTO.FromOrder(_OrdersTestData.Order3),
-                                                    OrderDTO.FromOrder(_OrdersTestData.Order4) };
+            var expectedData = new List<OrderSummaryDTO> { OrderSummaryDTO.FromOrder(_OrdersTestData.Order1),
+                                                           OrderSummaryDTO.FromOrder(_OrdersTestData.Order2),
+                                                           OrderSummaryDTO.FromOrder(_OrdersTestData.Order3),
+                                                           OrderSummaryDTO.FromOrder(_OrdersTestData.Order4) };
             _mockMediator.Setup(x => x.Send(It.IsAny<GetAllOrdersQuery>(), It.IsAny<CancellationToken>()))
                         .ReturnsAsync(expectedData);
 
@@ -39,7 +39,7 @@ namespace API.LineTen.Tests.Orders.Tests
 
             // Assert
             var actionResult = Assert.IsType<OkObjectResult>(result);
-            var Orders = (List<OrderDTO>)actionResult.Value;
+            var Orders = (List<OrderSummaryDTO>)actionResult.Value;
             Assert.Equal(expected: expectedData.Count, actual: Orders.Count);
             Assert.Equal(expected: expectedData[0], actual: Orders[0]);
             Assert.Equal(expected: expectedData[1], actual: Orders[1]);

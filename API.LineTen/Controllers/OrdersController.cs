@@ -3,6 +3,7 @@ using Application.LineTen.Orders.Commands.DeleteOrder;
 using Application.LineTen.Orders.Commands.UpdateOrder;
 using Application.LineTen.Orders.Queries.GetAllOrders;
 using Application.LineTen.Orders.Queries.GetOrderByID;
+using Application.LineTen.Orders.Queries.GetOrderSummary;
 using Domain.LineTen.Orders;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -43,9 +44,9 @@ namespace API.LineTen.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetByID(Guid id)
+        public async Task<IActionResult> GetOrderSummary(Guid id)
         {
-            var query = new GetOrderByIDQuery() { OrderID = id };
+            var query = new GetOrderSummaryQuery () { OrderID = id };
             var result = await _mediator.Send(query);
             if (result == null)
             {

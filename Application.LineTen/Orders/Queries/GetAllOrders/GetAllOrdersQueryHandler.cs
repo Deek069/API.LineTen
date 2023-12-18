@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Application.LineTen.Orders.Queries.GetAllOrders
 {
-    public class GetAllOrdersQueryHandler : IRequestHandler<GetAllOrdersQuery, IEnumerable<OrderDTO>>
+    public class GetAllOrdersQueryHandler : IRequestHandler<GetAllOrdersQuery, IEnumerable<OrderSummaryDTO>>
     {
         private IOrdersRepository _ordersRepository;
 
@@ -13,10 +13,10 @@ namespace Application.LineTen.Orders.Queries.GetAllOrders
             _ordersRepository = ordersRepository;
         }
 
-        public async Task<IEnumerable<OrderDTO>> Handle(GetAllOrdersQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<OrderSummaryDTO>> Handle(GetAllOrdersQuery request, CancellationToken cancellationToken)
         {
             var allOrders = _ordersRepository.GetAll();
-            List<OrderDTO> result = allOrders.Select(OrderDTO.FromOrder).ToList();
+            List<OrderSummaryDTO> result = allOrders.Select(OrderSummaryDTO.FromOrder).ToList();
             return result;
         }
     }

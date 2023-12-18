@@ -23,8 +23,8 @@ namespace LineTen.IntegrationTests.Orders.Tests
 
             // Assert
             Assert.Equal(expected: HttpStatusCode.OK, actual: response.StatusCode);
-            var OrderGot = await response.Content.ReadFromJsonAsync<OrderDTO>();
-            Assert.Equal(expected: newOrder, actual: OrderGot);
+            var OrderGot = await response.Content.ReadFromJsonAsync<OrderSummaryDTO>();
+            Assert.Equal(expected: newOrder.ID, actual: OrderGot.ID);
         }
 
         [Fact]
