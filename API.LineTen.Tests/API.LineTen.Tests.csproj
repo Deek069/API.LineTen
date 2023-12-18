@@ -23,4 +23,10 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\API.LineTen\API.LineTen.csproj" />
+    <ProjectReference Include="..\Application.LineTen\Application.LineTen.csproj" />
+    <ProjectReference Include="..\Domain.LineTen\Domain.LineTen.csproj" />
+  </ItemGroup>
+
 </Project>

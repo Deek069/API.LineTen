@@ -12,5 +12,11 @@
 	  <InternalsVisibleTo Include="LineTen.IntegrationTests" />  
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Application.LineTen\Application.LineTen.csproj" />
+    <ProjectReference Include="..\Domain.LineTen\Domain.LineTen.csproj" />
+    <ProjectReference Include="..\Persistence.LineTen\Persistence.LineTen.csproj" />
+  </ItemGroup>
+
 	
 </Project>
