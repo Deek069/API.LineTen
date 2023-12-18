@@ -1,17 +1,51 @@
-﻿namespace Persistence.LineTen.Tests.Products
+﻿using Domain.LineTen.Products;
+using Persistence.LineTen.Repositories;
+
+namespace Persistence.LineTen.Tests.Products
 {
     public class ProductsRepository_GetByID_Tests
     {
-        [Fact]
-        public async Task ProductsRepository_GetByID_ValidID()
+        private readonly LineTenDB _db;
+        private readonly UnitOfWork _unitOfWork;
+        private readonly ProductsRepository _repo;
+        private readonly ProductsTestData _testData;
+
+        public ProductsRepository_GetByID_Tests()
         {
-            Assert.Fail("Not implemented");
+            _db = TestDBContext.GetTestDBContext();
+            _unitOfWork = new UnitOfWork(_db);
+            _repo = new ProductsRepository(_db);
+            _testData = new ProductsTestData();
         }
 
         [Fact]
-        public void ProductsRepository_GetByID_InvalidID()
+        public async Task GetByID_Should_ReturnTheProduct_ForValidID()
         {
-            Assert.Fail("Not implemented");
+            // Arrange
+            _repo.Create(_testData.Product1);
+            await _unitOfWork.SaveChangesAsync();
+
+            // Act
+            var verifyProduct = _repo.GetById(_testData.Product1.ID);
+
+            // Assert
+            Assert.Equal(expected: _testData.Product1.ID.value, actual: verifyProduct.ID.value);
+            Assert.Equal(expected: _testData.Product1.Name, actual: verifyProduct.Name);
+            Assert.Equal(expected: _testData.Product1.Description, actual: verifyProduct.Description);
+            Assert.Equal(expected: _testData.Product1.SKU, actual: verifyProduct.SKU);
+        }
+
+        [Fact]
+        public void GetByID_Should_ReturnNull_ForInvalidID()
+        {
+            // Arrange
+
+            // Act
+            var customerID = ProductID.CreateUnique();
+            var verifyProduct = _repo.GetById(customerID);
+
+            // Assert
+            Assert.True(verifyProduct == null);
         }
     }
 }
