@@ -27,9 +27,9 @@ namespace Application.LineTen.Tests.Orders.Commands
             // Arrange
             var command = new DeleteOrderCommand()
             {
-                OrderID = _ordersTestData.Order1.ID
+                OrderID = _ordersTestData.Order1.ID.value
             };
-            _ordersRepoMock.Setup(repo => repo.GetById(command.OrderID)).Returns(_ordersTestData.Order1);
+            _ordersRepoMock.Setup(repo => repo.GetById(_ordersTestData.Order1.ID)).Returns(_ordersTestData.Order1);
 
             // Act
             await _handler.Handle(command, default);
@@ -45,7 +45,7 @@ namespace Application.LineTen.Tests.Orders.Commands
             // Arrange
             var command = new DeleteOrderCommand()
             {
-                OrderID = OrderID.CreateUnique()
+                OrderID = OrderID.CreateUnique().value
             };
             _ordersRepoMock.Setup(repo => repo.GetById(It.IsAny<OrderID>())).Returns(valueFunction: () => null);
 

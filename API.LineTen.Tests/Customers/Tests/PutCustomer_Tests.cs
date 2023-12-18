@@ -7,7 +7,7 @@ using Moq;
 using MediatR;
 using Domain.LineTen.Customers;
 
-namespace API.LineTen.Tests.Customers
+namespace API.LineTen.Tests.Customers.Tests
 {
     public class PutCustomer_Tests
     {

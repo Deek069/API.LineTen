@@ -5,6 +5,6 @@ namespace Application.LineTen.Orders.Commands.DeleteOrder
 {
     public sealed class DeleteOrderCommand: IRequest<bool>
     {
-        public OrderID OrderID { get; set; }
+        public Guid OrderID { get; set; }
     }
 }

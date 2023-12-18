@@ -1,5 +1,6 @@
 ﻿using Application.LineTen.Common.Interfaces;
 using Application.LineTen.Orders.Interfaces;
+using Domain.LineTen.Orders;
 using MediatR;
 
 namespace Application.LineTen.Orders.Commands.UpdateOrder
@@ -17,7 +18,7 @@ namespace Application.LineTen.Orders.Commands.UpdateOrder
 
         public async Task<bool> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
         {
-            var order = _ordersRepository.GetById(request.OrderID);
+            var order = _ordersRepository.GetById(new OrderID(request.OrderID));
             if (order == null) return false;
 
             order.Status = request.Status;

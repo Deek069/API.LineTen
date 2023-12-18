@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using MediatR;
 
-namespace API.LineTen.Tests.Products
+namespace API.LineTen.Tests.Products.Tests
 {
     public class GetProduct_Tests
     {

@@ -6,6 +6,6 @@ namespace Application.LineTen.Orders.Queries.GetOrderByID
 {
     public sealed class GetOrderByIDQuery : IRequest<OrderDTO>
     {
-        public OrderID OrderID { get; set; }
+        public Guid OrderID { get; set; }
     }
 }
