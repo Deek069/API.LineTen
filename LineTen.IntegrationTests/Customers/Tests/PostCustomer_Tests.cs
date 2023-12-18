@@ -1,6 +1,8 @@
 ﻿using Application.LineTen.Customers.DTOs;
 using System.Net.Http.Json;
 using System.Net;
+using System.Text;
+using System.Text.Json;
 
 namespace LineTen.IntegrationTests.Customers.Tests
 {
@@ -14,17 +16,19 @@ namespace LineTen.IntegrationTests.Customers.Tests
             var methods = new CustomerMethods(TestClient);
 
             // Act
-            var postResponse = await methods.CreateCustomer(testData.Customer1);
+            var jsonContent = JsonSerializer.Serialize(testData.CreateCustomerCommand1);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+            var response = await TestClient.PostAsync("Customers", content);
 
             // Assert
-            Assert.Equal(expected: HttpStatusCode.Created, actual: postResponse.StatusCode);
-            var newCustomer = await postResponse.Content.ReadFromJsonAsync<CustomerDTO>();
+            Assert.Equal(expected: HttpStatusCode.Created, actual: response.StatusCode);
+            var newCustomer = await response.Content.ReadFromJsonAsync<CustomerDTO>();
 
             Assert.NotEqual(expected: Guid.Empty, actual: newCustomer.ID);
-            Assert.Equal(expected: testData.Customer1.FirstName, actual: newCustomer.FirstName);
-            Assert.Equal(expected: testData.Customer1.LastName, actual: newCustomer.LastName);
-            Assert.Equal(expected: testData.Customer1.Phone, actual: newCustomer.Phone);
-            Assert.Equal(expected: testData.Customer1.Email, actual: newCustomer.Email);
+            Assert.Equal(expected: testData.CreateCustomerCommand1.FirstName, actual: newCustomer.FirstName);
+            Assert.Equal(expected: testData.CreateCustomerCommand1.LastName, actual: newCustomer.LastName);
+            Assert.Equal(expected: testData.CreateCustomerCommand1.Phone, actual: newCustomer.Phone);
+            Assert.Equal(expected: testData.CreateCustomerCommand1.Email, actual: newCustomer.Email);
         }
     }
 }

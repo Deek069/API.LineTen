@@ -31,8 +31,8 @@ namespace API.LineTen.Tests.Orders.Tests
                         .ReturnsAsync(OrderDTO.FromOrder(_OrdersTestData.Order1));
             var command = new CreateOrderCommand()
             {
-                CustomerID = _OrdersTestData.Order1.CustomerID,
-                ProductID = _OrdersTestData.Order1.ProductID,
+                CustomerID = _OrdersTestData.Order1.CustomerID.value,
+                ProductID = _OrdersTestData.Order1.ProductID.value,
             };
 
             // Act

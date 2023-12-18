@@ -1,6 +1,4 @@
-﻿using Application.LineTen.Orders.DTOs;
-using Domain.LineTen.Orders;
-using System.Security.Cryptography.X509Certificates;
+﻿using Domain.LineTen.Orders;
 
 namespace Application.LineTen.Tests.Orders
 {

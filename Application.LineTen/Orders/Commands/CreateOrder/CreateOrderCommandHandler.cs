@@ -5,6 +5,8 @@ using Application.LineTen.Products.Interfaces;
 using Application.LineTen.Orders.DTOs;
 using Application.LineTen.Common.Interfaces;
 using MediatR;
+using Domain.LineTen.Customers;
+using Domain.LineTen.Products;
 
 namespace Application.LineTen.Orders.Commands.CreateOrder
 {
@@ -28,11 +30,14 @@ namespace Application.LineTen.Orders.Commands.CreateOrder
 
         public async Task<OrderDTO> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
         {
-            if (!_customersRepository.CustomerExists(request.CustomerID))
+            var customerID = new CustomerID(request.CustomerID);
+            var productID = new ProductID(request.ProductID);
+
+            if (!_customersRepository.CustomerExists(customerID))
             {
                 throw new ArgumentException("Customer does not exist.");
             }
-            if (!_productsRepository.ProductExists(request.ProductID))
+            if (!_productsRepository.ProductExists(productID))
             {
                 throw new ArgumentException("Product does not exist.");
             }
@@ -40,8 +45,8 @@ namespace Application.LineTen.Orders.Commands.CreateOrder
             var order = new Order()
             {
                 ID = OrderID.CreateUnique(),
-                CustomerID = request.CustomerID,
-                ProductID = request.ProductID,
+                CustomerID = customerID,
+                ProductID = productID,
                 Status = OrderStatus.Pending,
             };
             _ordersRepository.Create(order);

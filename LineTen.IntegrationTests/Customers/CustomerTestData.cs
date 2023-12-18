@@ -1,26 +1,26 @@
-﻿using Domain.LineTen.Customers;
+﻿using Application.LineTen.Customers.Commands.CreateCustomer;
+using Application.LineTen.Customers.DTOs;
+using Domain.LineTen.Customers;
 
 namespace LineTen.IntegrationTests.Customers
 {
     internal sealed class CustomerTestData
     {
-        public Customer Customer1 { get; set; }
-        public Customer Customer2 { get; set; }
+        public CreateCustomerCommand CreateCustomerCommand1 { get; set; }
+        public CreateCustomerCommand CreateCustomerCommand2 { get; set; }
 
         public CustomerTestData()
         {
-            Customer1 = new Customer()
+            CreateCustomerCommand1= new CreateCustomerCommand()
             {
-                ID = CustomerID.CreateUnique(),
                 FirstName = "Joe",
                 LastName = "Bloggs",
                 Phone = "07723 2239356",
                 Email = "joe.bloggs@gamil.com"
             };
 
-            Customer2 = new Customer()
+            CreateCustomerCommand2 = new CreateCustomerCommand()
             {
-                ID = CustomerID.CreateUnique(),
                 FirstName = "Alice",
                 LastName = "Smith",
                 Phone = "09483 743738",

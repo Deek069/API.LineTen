@@ -1,6 +1,4 @@
-﻿using Application.LineTen.Products.DTOs;
-using System.Net.Http.Json;
-using System.Net;
+﻿using System.Net;
 using Domain.LineTen.Products;
 
 namespace LineTen.IntegrationTests.Products.Tests
@@ -11,13 +9,13 @@ namespace LineTen.IntegrationTests.Products.Tests
         public async Task Delete_Should_ReturnOK_IfAValidIDIsProvided()
         {
             // Arrange
-            var testData = new ProductsTestData();
+            var testData = new ProductTestData();
             var methods = new ProductMethods(TestClient);
-            var postResponse = await methods.CreateProduct(testData.Product1);
-            var newProduct = await postResponse.Content.ReadFromJsonAsync<ProductDTO>();
+            var newProduct = await methods.CreateProduct(testData.CreateProductCommand1);
+            Assert.NotNull(newProduct);
 
             // Act
-            var deleteResponse = await methods.DeleteProduct(newProduct.ID);
+            var deleteResponse = await TestClient.DeleteAsync($"Products/{newProduct.ID}");
 
             // Assert
             Assert.Equal(expected: HttpStatusCode.OK, actual: deleteResponse.StatusCode);
@@ -31,7 +29,7 @@ namespace LineTen.IntegrationTests.Products.Tests
             var productID = ProductID.CreateUnique().value;
 
             // Act
-            var deleteResponse = await methods.DeleteProduct(productID);
+            var deleteResponse = await TestClient.DeleteAsync($"Products/{productID}");
 
             // Assert
             Assert.Equal(expected: HttpStatusCode.NotFound, actual: deleteResponse.StatusCode);

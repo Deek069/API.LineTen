@@ -1,11 +1,7 @@
-﻿using Application.LineTen.Customers.Commands.CreateCustomer;
-using Application.LineTen.Customers.DTOs;
+﻿using Application.LineTen.Customers.DTOs;
 using Domain.LineTen.Customers;
 using System.Net;
 using System.Net.Http.Json;
-using System.Text;
-using System.Text.Json;
-using Xunit.Sdk;
 
 namespace LineTen.IntegrationTests.Customers.Tests
 {
@@ -17,12 +13,11 @@ namespace LineTen.IntegrationTests.Customers.Tests
             // Arrange
             var testData = new CustomerTestData();
             var methods = new CustomerMethods(TestClient);
-
-            var postResponse = await methods.CreateCustomer(testData.Customer1);
-            var newCustomer = await postResponse.Content.ReadFromJsonAsync<CustomerDTO>();
+            var newCustomer = await methods.CreateCustomer(testData.CreateCustomerCommand1);
+            Assert.NotNull(newCustomer);
 
             // Act
-            var getResponse = await methods.GetCustomer(newCustomer.ID);
+            var getResponse = await TestClient.GetAsync($"Customers/{newCustomer.ID}");
 
             // Assert
             Assert.Equal(expected: HttpStatusCode.OK, actual: getResponse.StatusCode);
@@ -39,7 +34,7 @@ namespace LineTen.IntegrationTests.Customers.Tests
             var customerID = CustomerID.CreateUnique().value;
 
             // Act
-            var getResponse = await methods.GetCustomer(customerID);
+            var getResponse = await TestClient.GetAsync($"Customers/{customerID}");
 
             // Assert
             Assert.Equal(expected: HttpStatusCode.NotFound, actual: getResponse.StatusCode);

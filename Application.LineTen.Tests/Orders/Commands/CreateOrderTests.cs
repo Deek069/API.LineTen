@@ -45,8 +45,8 @@ namespace Application.LineTen.Tests.Orders.Commands
             // Act
             var command = new CreateOrderCommand()
             {
-                CustomerID = _ordersTestData.CustomerTestData.Customer1.ID,
-                ProductID = _ordersTestData.ProductTestData.Product1.ID
+                CustomerID = _ordersTestData.CustomerTestData.Customer1.ID.value,
+                ProductID = _ordersTestData.ProductTestData.Product1.ID.value
             };
             var result = await _handler.Handle(command, default);
 
@@ -55,8 +55,8 @@ namespace Application.LineTen.Tests.Orders.Commands
             _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
 
             Assert.NotEqual(expected: Guid.Empty, actual: result.ID);
-            Assert.Equal(expected: command.CustomerID.value, actual: result.CustomerID);
-            Assert.Equal(expected: command.ProductID.value, actual: result.ProductID);
+            Assert.Equal(expected: command.CustomerID, actual: result.CustomerID);
+            Assert.Equal(expected: command.ProductID, actual: result.ProductID);
         }
     }
 }

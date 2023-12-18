@@ -12,19 +12,17 @@ namespace LineTen.IntegrationTests.Customers.Tests
             // Arrange
             var testData = new CustomerTestData();
             var methods = new CustomerMethods(TestClient);
-
-            var postResponse1 = await methods.CreateCustomer(testData.Customer1);
-            var newCustomer1 = await postResponse1.Content.ReadFromJsonAsync<CustomerDTO>();
-
-            var postResponse2 = await methods.CreateCustomer(testData.Customer2);
-            var newCustomer2 = await postResponse2.Content.ReadFromJsonAsync<CustomerDTO>();
+            var newCustomer1 = await methods.CreateCustomer(testData.CreateCustomerCommand1);
+            Assert.NotNull(newCustomer1);
+            var newCustomer2 = await methods.CreateCustomer(testData.CreateCustomerCommand2);
+            Assert.NotNull(newCustomer2);
 
             // Act
-            var getResponse = await methods.GetCustomers();
+            var response = await TestClient.GetAsync($"Customers");
 
             // Assert
-            Assert.Equal(expected: HttpStatusCode.OK, actual: getResponse.StatusCode);
-            var customers = await getResponse.Content.ReadFromJsonAsync<List<CustomerDTO>>();
+            Assert.Equal(expected: HttpStatusCode.OK, actual: response.StatusCode);
+            var customers = await response.Content.ReadFromJsonAsync<List<CustomerDTO>>();
 
             Assert.True(customers.Count > 2, "Less than the expected number of customers returned");
             Assert.True(customers.Where(m => m.ID == newCustomer1.ID).Count() == 1, "Customer 1 not returned");

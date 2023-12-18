@@ -1,6 +1,4 @@
-﻿using Application.LineTen.Customers.DTOs;
-using System.Net.Http.Json;
-using System.Net;
+﻿using System.Net;
 using Domain.LineTen.Customers;
 
 namespace LineTen.IntegrationTests.Customers.Tests
@@ -13,11 +11,11 @@ namespace LineTen.IntegrationTests.Customers.Tests
             // Arrange
             var testData = new CustomerTestData();
             var methods = new CustomerMethods(TestClient);
-            var postResponse = await methods.CreateCustomer(testData.Customer1);
-            var newCustomer = await postResponse.Content.ReadFromJsonAsync<CustomerDTO>();
+            var newCustomer = await methods.CreateCustomer(testData.CreateCustomerCommand1);
+            Assert.NotNull(newCustomer);
 
             // Act
-            var deleteResponse = await methods.DeleteCustomer(newCustomer.ID);
+            var deleteResponse = await TestClient.DeleteAsync($"Customers/{newCustomer.ID}");
 
             // Assert
             Assert.Equal(expected: HttpStatusCode.OK, actual: deleteResponse.StatusCode);
@@ -31,7 +29,7 @@ namespace LineTen.IntegrationTests.Customers.Tests
             var customerID = CustomerID.CreateUnique().value;
 
             // Act
-            var deleteResponse = await methods.DeleteCustomer(customerID);
+            var deleteResponse = await TestClient.DeleteAsync($"Customers/{customerID}");
 
             // Assert
             Assert.Equal(expected: HttpStatusCode.NotFound, actual: deleteResponse.StatusCode);

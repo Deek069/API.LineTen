@@ -11,14 +11,13 @@ namespace LineTen.IntegrationTests.Products.Tests
         public async Task GetProduct_Should_ReturnProduct_WithValidID()
         {
             // Arrange
-            var testData = new ProductsTestData();
+            var testData = new ProductTestData();
             var methods = new ProductMethods(TestClient);
-
-            var postResponse = await methods.CreateProduct(testData.Product1);
-            var newProduct = await postResponse.Content.ReadFromJsonAsync<ProductDTO>();
+            var newProduct = await methods.CreateProduct(testData.CreateProductCommand1);
+            Assert.NotNull(newProduct);
 
             // Act
-            var getResponse = await methods.GetProduct(newProduct.ID);
+            var getResponse = await TestClient.GetAsync($"Products/{newProduct.ID}");
 
             // Assert
             Assert.Equal(expected: HttpStatusCode.OK, actual: getResponse.StatusCode);
@@ -31,11 +30,10 @@ namespace LineTen.IntegrationTests.Products.Tests
         public async Task GetProduct_Should_ReturnNotFound_WithInvalidID()
         {
             // Arrange
-            var methods = new ProductMethods(TestClient);
             var productID = ProductID.CreateUnique().value;
 
             // Act
-            var getResponse = await methods.GetProduct(productID);
+            var getResponse = await TestClient.GetAsync($"Products/{productID}");
 
             // Assert
             Assert.Equal(expected: HttpStatusCode.NotFound, actual: getResponse.StatusCode);

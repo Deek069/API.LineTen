@@ -10,21 +10,19 @@ namespace LineTen.IntegrationTests.Products.Tests
         public async Task GetProducts_Should_ReturnAllProducts()
         {
             // Arrange
-            var testData = new ProductsTestData();
+            var testData = new ProductTestData();
             var methods = new ProductMethods(TestClient);
-
-            var postResponse1 = await methods.CreateProduct(testData.Product1);
-            var newProduct1 = await postResponse1.Content.ReadFromJsonAsync<ProductDTO>();
-
-            var postResponse2 = await methods.CreateProduct(testData.Product2);
-            var newProduct2 = await postResponse2.Content.ReadFromJsonAsync<ProductDTO>();
+            var newProduct1 = await methods.CreateProduct(testData.CreateProductCommand1);
+            Assert.NotNull(newProduct1);
+            var newProduct2 = await methods.CreateProduct(testData.CreateProductCommand2);
+            Assert.NotNull(newProduct2);
 
             // Act
-            var getResponse = await methods.GetProducts();
+            var response = await TestClient.GetAsync($"Products");
 
             // Assert
-            Assert.Equal(expected: HttpStatusCode.OK, actual: getResponse.StatusCode);
-            var Products = await getResponse.Content.ReadFromJsonAsync<List<ProductDTO>>();
+            Assert.Equal(expected: HttpStatusCode.OK, actual: response.StatusCode);
+            var Products = await response.Content.ReadFromJsonAsync<List<ProductDTO>>();
 
             Assert.True(Products.Count > 2, "Less than the expected number of Products returned");
             Assert.True(Products.Where(m => m.ID == newProduct1.ID).Count() == 1, "Product 1 not returned");

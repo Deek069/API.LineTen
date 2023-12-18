@@ -1,6 +1,8 @@
 ﻿using Application.LineTen.Products.Commands.CreateProduct;
 using Application.LineTen.Products.Commands.UpdateProduct;
-using Domain.LineTen.Products;
+using Application.LineTen.Products.DTOs;
+using System.Net.Http.Json;
+using System.Net;
 using System.Text;
 using System.Text.Json;
 
@@ -15,51 +17,46 @@ namespace LineTen.IntegrationTests.Products
             _client = Client;
         }
 
-        public async Task<HttpResponseMessage?> CreateProduct(Product Product)
+        public async Task<ProductDTO?> CreateProduct(CreateProductCommand command)
         {
-            var command = new CreateProductCommand()
-            {
-                Name = Product.Name,
-                Description = Product.Description,
-                SKU = Product.SKU,
-            };
             var jsonContent = JsonSerializer.Serialize(command);
             var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-            var postResponse = await _client.PostAsync("Products", content);
-            return postResponse;
+            var response = await _client.PostAsync("Products", content);
+            if (response.StatusCode != HttpStatusCode.Created) return null;
+            var newProduct = await response.Content.ReadFromJsonAsync<ProductDTO>();
+            return newProduct;
         }
 
-        public async Task<HttpResponseMessage?> DeleteProduct(Guid ProductID)
+        public async Task<bool> DeleteProduct(Guid ProductID)
         {
-            var postResponse = await _client.DeleteAsync($"Products/{ProductID}");
-            return postResponse;
+            var response = await _client.DeleteAsync($"Products/{ProductID}");
+            if (response.StatusCode != HttpStatusCode.OK) return false;
+            return true;
         }
 
-        public async Task<HttpResponseMessage?> GetProduct(Guid ProductID)
+        public async Task<ProductDTO?> GetProduct(Guid ProductID)
         {
-            var postResponse = await _client.GetAsync($"Products/{ProductID}");
-            return postResponse;
+            var response = await _client.GetAsync($"Products/{ProductID}");
+            if (response.StatusCode != HttpStatusCode.OK) return null;
+            var Product = await response.Content.ReadFromJsonAsync<ProductDTO>();
+            return Product;
         }
 
-        public async Task<HttpResponseMessage?> GetProducts()
+        public async Task<List<ProductDTO>?> GetProducts()
         {
-            var postResponse = await _client.GetAsync($"Products");
-            return postResponse;
+            var response = await _client.GetAsync($"Products");
+            if (response.StatusCode != HttpStatusCode.OK) return null;
+            var Products = await response.Content.ReadFromJsonAsync<List<ProductDTO>>();
+            return Products;
         }
 
-        public async Task<HttpResponseMessage?> UpdateProduct(Product Product)
+        public async Task<bool> UpdateProduct(UpdateProductCommand command)
         {
-            var command = new UpdateProductCommand()
-            {
-                ProductID = Product.ID.value,
-                Name = Product.Name,
-                Description = Product.Description,
-                SKU = Product.SKU
-            };
             var jsonContent = JsonSerializer.Serialize(command);
             var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-            var postResponse = await _client.PutAsync("Products", content);
-            return postResponse;
+            var response = await _client.PutAsync("Products", content);
+            if (response.StatusCode != HttpStatusCode.OK) return false;
+            return true;
         }
     }
 }
