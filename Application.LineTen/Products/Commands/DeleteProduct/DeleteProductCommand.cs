@@ -5,6 +5,6 @@ namespace Application.LineTen.Products.Commands.DeleteProduct
 {
     public sealed class DeleteProductCommand : IRequest<bool>
     {
-        public ProductID ProductID { get; set; }
+        public Guid ProductID { get; set; }
     }
 }

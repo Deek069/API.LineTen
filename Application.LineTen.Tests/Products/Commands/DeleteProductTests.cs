@@ -26,13 +26,10 @@ namespace Application.LineTen.Tests.Products.Commands
         {
             // Arrange
             var productID = ProductID.CreateUnique();
-            var command = new DeleteProductCommand
-            {
-                ProductID = _productsTestData.Product1.ID
-            };
-            _productsRepoMock.Setup(repo => repo.GetById(command.ProductID)).Returns(_productsTestData.Product1);
+            _productsRepoMock.Setup(repo => repo.GetById(_productsTestData.Product1.ID)).Returns(_productsTestData.Product1);
 
             // Act
+            var command = new DeleteProductCommand { ProductID = _productsTestData.Product1.ID.value };
             await _handler.Handle(command, default);
 
             // Assert
@@ -44,14 +41,10 @@ namespace Application.LineTen.Tests.Products.Commands
         public async Task Handler_Should_ReturnFalse_IfInvalidIDProvided()
         {
             // Arrange
-            var command = new DeleteProductCommand
-            {
-                ProductID = ProductID.CreateUnique()
-            };
-
             _productsRepoMock.Setup(repo => repo.GetById(It.IsAny<ProductID>())).Returns(valueFunction: () => null);
 
             // Act
+            var command = new DeleteProductCommand { ProductID = ProductID.CreateUnique().value };
             await _handler.Handle(command, default);
 
             // Assert

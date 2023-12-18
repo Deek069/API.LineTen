@@ -26,17 +26,16 @@ namespace Application.LineTen.Tests.Products.Commands
         {
             // Arrange
             _productsRepoMock.Setup(repo => repo.GetById(_productsTestData.Product1.ID)).Returns(_productsTestData.Product1);
-
             _productsTestData.Product1.SKU = "KHI-201304";
+
+            // Act
             var command = new UpdateProductCommand
             {
-                ProductID = _productsTestData.Product1.ID,
+                ProductID = _productsTestData.Product1.ID.value,
                 Name = _productsTestData.Product1.Name,
                 Description = _productsTestData.Product1.Description,
                 SKU = _productsTestData.Product1.SKU
             };
-
-            // Act
             await _handler.Handle(command, default);
 
             // Assert
@@ -48,16 +47,16 @@ namespace Application.LineTen.Tests.Products.Commands
         public async Task Handler_Should_ReturnFalse_IfInvalidIDProvided()
         {
             // Arrange
+            _productsRepoMock.Setup(repo => repo.GetById(It.IsAny<ProductID>())).Returns(valueFunction: () => null);
+
+            // Act
             var command = new UpdateProductCommand
             {
-                ProductID = ProductID.CreateUnique(),
+                ProductID = ProductID.CreateUnique().value,
                 Name = _productsTestData.Product1.Name,
                 Description = _productsTestData.Product1.Description,
                 SKU = _productsTestData.Product1.SKU
             };
-            _productsRepoMock.Setup(repo => repo.GetById(It.IsAny<ProductID>())).Returns(valueFunction: () => null);
-
-            // Act
             await _handler.Handle(command, default);
 
             // Assert

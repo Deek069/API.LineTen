@@ -1,5 +1,6 @@
 ﻿using Application.LineTen.Common.Interfaces;
 using Application.LineTen.Products.Interfaces;
+using Domain.LineTen.Products;
 using MediatR;
 
 namespace Application.LineTen.Products.Commands.DeleteProduct
@@ -17,7 +18,7 @@ namespace Application.LineTen.Products.Commands.DeleteProduct
 
         public async Task<bool> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
         {
-            var order = _productsRepository.GetById(request.ProductID);
+            var order = _productsRepository.GetById(new ProductID(request.ProductID));
             if (order == null) return false;
 
             _productsRepository.Delete(order);

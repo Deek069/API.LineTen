@@ -1,5 +1,6 @@
 ﻿using Application.LineTen.Common.Interfaces;
 using Application.LineTen.Products.Interfaces;
+using Domain.LineTen.Products;
 using MediatR;
 
 namespace Application.LineTen.Products.Commands.UpdateProduct
@@ -17,7 +18,7 @@ namespace Application.LineTen.Products.Commands.UpdateProduct
 
         public async Task<bool> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
-            var product = _productsRepository.GetById(request.ProductID);
+            var product = _productsRepository.GetById(new ProductID(request.ProductID));
             if (product == null) return false;
 
             product.Name = request.Name;
