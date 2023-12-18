@@ -5,7 +5,7 @@ namespace Application.LineTen.Customers.Commands.UpdateCustomer
 {
     public sealed class UpdateCustomerCommand : IRequest<bool>
     {
-        public CustomerID ID { get; set; }
+        public Guid CustomerID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Phone { get; set; }

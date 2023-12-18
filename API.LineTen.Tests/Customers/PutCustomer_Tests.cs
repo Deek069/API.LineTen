@@ -1,7 +1,6 @@
 ﻿using API.LineTen.Controllers;
 using Application.LineTen.Customers.Interfaces;
 using Application.LineTen.Customers.Commands.UpdateCustomer;
-using Domain.LineTen.Customers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -26,40 +25,44 @@ namespace API.LineTen.Tests.Customers
         }
 
         [Fact]
-        public async Task PostCustomer_Should_ReturnOK_WithValidID()
+        public async Task PutCustomer_Should_ReturnOK_WithValidID()
         {
             // Arrange
             _mockMediator.Setup(x => x.Send(It.IsAny<UpdateCustomerCommand>(), It.IsAny<CancellationToken>()))
                         .ReturnsAsync(true);
+            var command = new UpdateCustomerCommand()
+            {
+                CustomerID = _customerTestData.Customer1.ID.value,
+                FirstName = _customerTestData.Customer1.FirstName,
+                LastName = _customerTestData.Customer1.LastName,
+                Phone = _customerTestData.Customer1.Phone,
+                Email = _customerTestData.Customer1.Email
+            };
 
             // Act
-            var result = (ActionResult)await _customersController.UpdateCustomer(
-                _customerTestData.Customer1.ID.value,
-                _customerTestData.Customer1.FirstName,
-                _customerTestData.Customer1.LastName,
-                _customerTestData.Customer1.Phone,
-                _customerTestData.Customer1.Email
-            );
+            var result = (ActionResult)await _customersController.UpdateCustomer(command);
 
             // Assert
             var actionResult = Assert.IsType<OkResult>(result);
         }
 
         [Fact]
-        public async Task PostCustomer_Should_ReturnNotFound_WithInvalidID()
+        public async Task PutCustomer_Should_ReturnNotFound_WithInvalidID()
         {
             // Arrange
             _mockMediator.Setup(x => x.Send(It.IsAny<UpdateCustomerCommand>(), It.IsAny<CancellationToken>()))
                         .ReturnsAsync(false);
+            var command = new UpdateCustomerCommand()
+            {
+                CustomerID = _customerTestData.Customer1.ID.value,
+                FirstName = "Marge",
+                LastName = "Simpson",
+                Phone = "01 02481 383848",
+                Email = "marge.simpson@aol.com"
+            };
 
             // Act
-            var result = (ActionResult)await _customersController.UpdateCustomer(
-                CustomerID.CreateUnique().value,
-                "Marge",
-                "Simpson",
-                "01 02481 383848",
-                "marge.simpson@aol.com"
-            );
+            var result = (ActionResult)await _customersController.UpdateCustomer(command);
 
             // Assert
             var actionResult = Assert.IsType<NotFoundResult>(result);

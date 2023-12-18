@@ -1,6 +1,6 @@
 ﻿using Domain.LineTen.Customers;
 
-namespace API.LineTen.Tests.Customers
+namespace LineTen.IntegrationTests.Customers
 {
     internal sealed class CustomerTestData
     {

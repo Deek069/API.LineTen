@@ -29,14 +29,16 @@ namespace API.LineTen.Tests.Customers
             // Arrange
             _mockMediator.Setup(x => x.Send(It.IsAny<CreateCustomerCommand>(), It.IsAny<CancellationToken>()))
                         .ReturnsAsync(CustomerDTO.FromCustomer(_customerTestData.Customer1));
+            var command = new CreateCustomerCommand()
+            {
+                FirstName = _customerTestData.Customer1.FirstName,
+                LastName = _customerTestData.Customer1.LastName,
+                Phone = _customerTestData.Customer1.Phone,
+                Email = _customerTestData.Customer1.Email
+            };
 
             // Act
-            var result = (ActionResult)await _customersController.CreateCustomer(
-                _customerTestData.Customer1.FirstName,
-                _customerTestData.Customer1.LastName,
-                _customerTestData.Customer1.Phone,
-                _customerTestData.Customer1.Email
-            );
+            var result = (ActionResult)await _customersController.CreateCustomer(command);
 
             // Assert
             var actionResult = Assert.IsType<CreatedAtActionResult>(result);

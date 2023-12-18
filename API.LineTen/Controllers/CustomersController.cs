@@ -25,15 +25,8 @@ namespace API.LineTen.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateCustomer(string firstName, string lastName, string phone, string email)
+        public async Task<IActionResult> CreateCustomer(CreateCustomerCommand command)
         {
-            var command = new CreateCustomerCommand()
-            {
-                FirstName = firstName,
-                LastName = lastName,
-                Phone = phone,
-                Email = email
-            };
             var result = await _mediator.Send(command);
             return CreatedAtAction(nameof(CreateCustomer), new { id = result.ID }, result);
         }
@@ -64,27 +57,19 @@ namespace API.LineTen.Controllers
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateCustomer(Guid customerID, string firstName, string lastName, string phone, string email)
+        public async Task<IActionResult> UpdateCustomer(UpdateCustomerCommand command)
         {
-            var command = new UpdateCustomerCommand()
-            {
-                ID = new CustomerID(customerID),
-                FirstName = firstName,
-                LastName = lastName,
-                Phone = phone,
-                Email = email
-            };
             var result = await _mediator.Send(command);
             if (!result) return NotFound();
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteCustomer(Guid id)
         {
-            var command = new DeleteCustomerCommand() { ID = new CustomerID(id) };
+            var command = new DeleteCustomerCommand() { CustomerID = id };
             var result = await _mediator.Send(command);
             if (!result) return NotFound();
             return Ok();

@@ -27,9 +27,9 @@ namespace Application.LineTen.Tests.Customers.Commands
             // Arrange
             var command = new DeleteCustomerCommand
             {
-                ID = CustomerID.CreateUnique()
+                CustomerID = CustomerID.CreateUnique().value
             };
-            _repositoryMock.Setup(repo => repo.GetById(command.ID)).Returns(_customerTestData.Customer1);
+            _repositoryMock.Setup(repo => repo.GetById(new CustomerID(command.CustomerID))).Returns(_customerTestData.Customer1);
 
             // Act
             var result = await _handler.Handle(command, default);
@@ -46,7 +46,7 @@ namespace Application.LineTen.Tests.Customers.Commands
             // Arrange
             var command = new DeleteCustomerCommand
             {
-                ID = CustomerID.CreateUnique()
+                CustomerID = CustomerID.CreateUnique().value
             };
             _repositoryMock.Setup(repo => repo.GetById(It.IsAny<CustomerID>())).Returns(valueFunction: () => null);
 

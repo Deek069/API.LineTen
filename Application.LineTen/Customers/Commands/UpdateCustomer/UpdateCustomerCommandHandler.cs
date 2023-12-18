@@ -1,5 +1,6 @@
 ﻿using Application.LineTen.Common.Interfaces;
 using Application.LineTen.Customers.Interfaces;
+using Domain.LineTen.Customers;
 using MediatR;
 
 namespace Application.LineTen.Customers.Commands.UpdateCustomer
@@ -17,7 +18,7 @@ namespace Application.LineTen.Customers.Commands.UpdateCustomer
 
         public async Task<bool> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
         {
-            var customer = _customersRepository.GetById(request.ID);
+            var customer = _customersRepository.GetById(new CustomerID(request.CustomerID));
             if (customer == null) return false;
 
             customer.FirstName = request.FirstName;
