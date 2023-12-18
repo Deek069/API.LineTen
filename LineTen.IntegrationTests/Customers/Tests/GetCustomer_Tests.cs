@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.Json;
 using Xunit.Sdk;
 
-namespace LineTen.IntegrationTests.Customers
+namespace LineTen.IntegrationTests.Customers.Tests
 {
     public class GetCustomer_Tests : IntegrationTest
     {

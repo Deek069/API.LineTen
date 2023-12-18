@@ -2,7 +2,7 @@
 using System.Net.Http.Json;
 using System.Net;
 
-namespace LineTen.IntegrationTests.Customers
+namespace LineTen.IntegrationTests.Customers.Tests
 {
     public class PostCustomer_Tests : IntegrationTest
     {

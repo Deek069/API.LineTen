@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 using System.Net;
 using Domain.LineTen.Customers;
 
-namespace LineTen.IntegrationTests.Customers
+namespace LineTen.IntegrationTests.Customers.Tests
 {
     public class PutCustomer_Tests : IntegrationTest
     {

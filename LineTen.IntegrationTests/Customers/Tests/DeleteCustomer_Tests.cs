@@ -3,9 +3,9 @@ using System.Net.Http.Json;
 using System.Net;
 using Domain.LineTen.Customers;
 
-namespace LineTen.IntegrationTests.Customers
+namespace LineTen.IntegrationTests.Customers.Tests
 {
-    public class DeleteCustomer_Test: IntegrationTest
+    public class DeleteCustomer_Test : IntegrationTest
     {
         [Fact]
         public async Task Delete_Should_ReturnOK_IfAValidIDIsProvided()
