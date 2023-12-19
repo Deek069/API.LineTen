@@ -5,6 +5,8 @@ using Application.LineTen.Customers.Interfaces;
 using Application.LineTen.Orders.Interfaces;
 using Application.LineTen.Products.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using API.LineTen.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +26,35 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Ap
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please enter the API key",
+        Name = "x-api-key",
+        Type = SecuritySchemeType.ApiKey,
+        BearerFormat = "JWT",
+        Scheme = "ApiKeyScheme"
+    });
+
+    var key = new OpenApiSecurityScheme()
+    {
+        Reference = new OpenApiReference
+        {
+            Type = ReferenceType.SecurityScheme,
+            Id = "ApiKey"
+        },
+        In = ParameterLocation.Header
+    };
+
+    var requirement = new OpenApiSecurityRequirement
+    {
+        {key, new List<string>() }
+    };
+
+    options.AddSecurityRequirement(requirement);
+});
 
 var app = builder.Build();
 
@@ -37,6 +67,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseMiddleware<ApiKeyAuthMiddleware>();
 app.UseAuthorization();
 
 app.MapControllers();
