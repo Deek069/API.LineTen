@@ -6,6 +6,6 @@ namespace Application.LineTen.Orders.Queries.GetOrderSummary
 {
     public sealed class GetOrderSummaryQuery : IRequest<OrderSummaryDTO>
     {
-        public Guid OrderID { get; set; }
+        public Guid ID { get; set; }
     }
 }

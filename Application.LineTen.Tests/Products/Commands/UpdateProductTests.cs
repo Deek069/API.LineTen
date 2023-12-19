@@ -31,7 +31,7 @@ namespace Application.LineTen.Tests.Products.Commands
             // Act
             var command = new UpdateProductCommand
             {
-                ProductID = _productsTestData.Product1.ID.value,
+                ID = _productsTestData.Product1.ID.value,
                 Name = _productsTestData.Product1.Name,
                 Description = _productsTestData.Product1.Description,
                 SKU = _productsTestData.Product1.SKU
@@ -52,7 +52,7 @@ namespace Application.LineTen.Tests.Products.Commands
             // Act
             var command = new UpdateProductCommand
             {
-                ProductID = ProductID.CreateUnique().value,
+                ID = ProductID.CreateUnique().value,
                 Name = _productsTestData.Product1.Name,
                 Description = _productsTestData.Product1.Description,
                 SKU = _productsTestData.Product1.SKU

@@ -19,7 +19,7 @@ namespace LineTen.IntegrationTests.Products.Tests
 
             var updateCommand = new UpdateProductCommand()
             {
-                ProductID = newProduct.ID,
+                ID = newProduct.ID,
                 Name = "Triumph Street Triple",
                 Description = "The Triumph Street Triple is a naked or streetfighter motorcycle made by Triumph Motorcycles, first released towards the end of 2007. The bike is closely modelled on the Speed Triple 1050 but uses a re-tuned inline three cylinder 675 cc engine from the Daytona 675 sport bike, which was released in 2006.",
                 SKU = "TRI-675R",
@@ -40,7 +40,7 @@ namespace LineTen.IntegrationTests.Products.Tests
             // Arrange
             var updateCommand = new UpdateProductCommand()
             {
-                ProductID = ProductID.CreateUnique().value,
+                ID = ProductID.CreateUnique().value,
                 Name = "Triumph Street Triple",
                 Description = "The Triumph Street Triple is a naked or streetfighter motorcycle made by Triumph Motorcycles, first released towards the end of 2007. The bike is closely modelled on the Speed Triple 1050 but uses a re-tuned inline three cylinder 675 cc engine from the Daytona 675 sport bike, which was released in 2006.",
                 SKU = "TRI-675R",

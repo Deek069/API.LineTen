@@ -19,7 +19,7 @@ namespace LineTen.IntegrationTests.Customers.Tests
 
             var updateCommand = new UpdateCustomerCommand()
             {
-                CustomerID = newCustomer.ID,
+                ID = newCustomer.ID,
                 FirstName = "Jonathan",
                 LastName = "Bobcat",
                 Phone = "01293 48238389",
@@ -41,7 +41,7 @@ namespace LineTen.IntegrationTests.Customers.Tests
             // Arrange
             var updateCommand = new UpdateCustomerCommand()
             {
-                CustomerID = CustomerID.CreateUnique().value,
+                ID = CustomerID.CreateUnique().value,
                 FirstName = "Jonathan",
                 LastName = "Bobcat",
                 Phone = "01293 48238389",

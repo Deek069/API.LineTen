@@ -16,7 +16,7 @@ namespace Application.LineTen.Products.Queries.GetProductByID
 
         public async Task<ProductDTO> Handle(GetProductByIDQuery request, CancellationToken cancellationToken)
         {
-            var product = _productsRepository.GetById(request.ProductID);
+            var product = _productsRepository.GetById(request.ID);
             if (product == null) return null;
             return ProductDTO.FromProduct(product);
         }

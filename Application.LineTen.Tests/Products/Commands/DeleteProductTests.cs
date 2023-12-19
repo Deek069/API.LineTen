@@ -29,7 +29,7 @@ namespace Application.LineTen.Tests.Products.Commands
             _productsRepoMock.Setup(repo => repo.GetById(_productsTestData.Product1.ID)).Returns(_productsTestData.Product1);
 
             // Act
-            var command = new DeleteProductCommand { ProductID = _productsTestData.Product1.ID.value };
+            var command = new DeleteProductCommand { ID = _productsTestData.Product1.ID.value };
             await _handler.Handle(command, default);
 
             // Assert
@@ -44,7 +44,7 @@ namespace Application.LineTen.Tests.Products.Commands
             _productsRepoMock.Setup(repo => repo.GetById(It.IsAny<ProductID>())).Returns(valueFunction: () => null);
 
             // Act
-            var command = new DeleteProductCommand { ProductID = ProductID.CreateUnique().value };
+            var command = new DeleteProductCommand { ID = ProductID.CreateUnique().value };
             await _handler.Handle(command, default);
 
             // Assert

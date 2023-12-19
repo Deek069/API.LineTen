@@ -27,7 +27,7 @@ namespace Application.LineTen.Tests.Orders.Commands
             // Arrange
             var command = new UpdateOrderCommand
             {
-                OrderID = _ordersTestData.Order1.ID.value,
+                ID = _ordersTestData.Order1.ID.value,
                 Status = OrderStatus.Pending
             };
 
@@ -48,7 +48,7 @@ namespace Application.LineTen.Tests.Orders.Commands
             var orderID = OrderID.CreateUnique();
             var command = new UpdateOrderCommand
             {
-                OrderID = orderID.value,
+                ID = orderID.value,
                 Status = OrderStatus.Pending
             };
             _ordersRepoMock.Setup(repo => repo.GetById(It.IsAny<OrderID>())).Returns(valueFunction: () => null);

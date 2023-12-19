@@ -1,11 +1,10 @@
 ﻿using Application.LineTen.Orders.DTOs;
-using Domain.LineTen.Orders;
 using MediatR;
 
 namespace Application.LineTen.Orders.Queries.GetOrderByID
 {
     public sealed class GetOrderByIDQuery : IRequest<OrderDTO>
     {
-        public Guid OrderID { get; set; }
+        public Guid ID { get; set; }
     }
 }

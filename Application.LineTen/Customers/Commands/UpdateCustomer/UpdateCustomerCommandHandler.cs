@@ -18,7 +18,7 @@ namespace Application.LineTen.Customers.Commands.UpdateCustomer
 
         public async Task<bool> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
         {
-            var customer = _customersRepository.GetById(new CustomerID(request.CustomerID));
+            var customer = _customersRepository.GetById(new CustomerID(request.ID));
             if (customer == null) return false;
 
             customer.FirstName = request.FirstName;

@@ -18,7 +18,7 @@ namespace Application.LineTen.Customers.Commands.DeleteCustomer
 
         public async Task<bool> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
         {
-            var customer = _customersRepository.GetById(new CustomerID(request.CustomerID));
+            var customer = _customersRepository.GetById(new CustomerID(request.ID));
             if (customer == null) return false;
 
             _customersRepository.Delete(customer);

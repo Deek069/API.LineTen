@@ -48,7 +48,7 @@ namespace API.LineTen.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetByID(Guid id)
         {
-            var query = new GetProductByIDQuery() { ProductID = new ProductID(id) };
+            var query = new GetProductByIDQuery() { ID = new ProductID(id) };
             var result = await _mediator.Send(query);
             if (result == null)
             {
@@ -74,7 +74,7 @@ namespace API.LineTen.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> DeleteProduct(Guid id)
         {
-            var command = new DeleteProductCommand() { ProductID = id };
+            var command = new DeleteProductCommand() { ID = id };
             var result = await _mediator.Send(command);
             if (!result) return NotFound();
             return Ok();

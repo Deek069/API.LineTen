@@ -16,7 +16,7 @@ namespace Application.LineTen.Orders.Queries.GetOrderSummary
 
         public async Task<OrderSummaryDTO> Handle(GetOrderSummaryQuery request, CancellationToken cancellationToken)
         {
-            var order = _ordersRepository.GetById(new OrderID(request.OrderID));
+            var order = _ordersRepository.GetById(new OrderID(request.ID));
             if (order == null) return null;
             var result = OrderSummaryDTO.FromOrder(order);
             return result;

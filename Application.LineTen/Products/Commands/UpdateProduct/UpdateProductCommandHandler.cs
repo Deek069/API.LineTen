@@ -18,7 +18,7 @@ namespace Application.LineTen.Products.Commands.UpdateProduct
 
         public async Task<bool> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
-            var product = _productsRepository.GetById(new ProductID(request.ProductID));
+            var product = _productsRepository.GetById(new ProductID(request.ID));
             if (product == null) return false;
 
             product.Name = request.Name;

@@ -33,7 +33,7 @@ namespace API.LineTen.Tests.Customers.Tests
                         .ReturnsAsync(true);
             var command = new UpdateCustomerCommand()
             {
-                CustomerID = _customerTestData.Customer1.ID.value,
+                ID = _customerTestData.Customer1.ID.value,
                 FirstName = _customerTestData.Customer1.FirstName,
                 LastName = _customerTestData.Customer1.LastName,
                 Phone = _customerTestData.Customer1.Phone,
@@ -55,7 +55,7 @@ namespace API.LineTen.Tests.Customers.Tests
                         .ReturnsAsync(false);
             var command = new UpdateCustomerCommand()
             {
-                CustomerID = CustomerID.CreateUnique().value,
+                ID = CustomerID.CreateUnique().value,
                 FirstName = "Marge",
                 LastName = "Simpson",
                 Phone = "01 02481 383848",

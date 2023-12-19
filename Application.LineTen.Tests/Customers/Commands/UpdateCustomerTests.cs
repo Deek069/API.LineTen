@@ -27,7 +27,7 @@ namespace Application.LineTen.Tests.Customers.Commands
             // Arrange
             var command = new UpdateCustomerCommand
             {
-                CustomerID = _customerTestData.Customer1.ID.value,
+                ID = _customerTestData.Customer1.ID.value,
                 FirstName = _customerTestData.Customer1.FirstName,
                 LastName = _customerTestData.Customer1.LastName,
                 Phone = _customerTestData.Customer1.Phone,
@@ -50,7 +50,7 @@ namespace Application.LineTen.Tests.Customers.Commands
             // Arrange
             var command = new UpdateCustomerCommand
             {
-                CustomerID = _customerTestData.Customer1.ID.value,
+                ID = _customerTestData.Customer1.ID.value,
                 FirstName = _customerTestData.Customer1.FirstName,
                 LastName = _customerTestData.Customer1.LastName,
                 Phone = _customerTestData.Customer1.Phone,

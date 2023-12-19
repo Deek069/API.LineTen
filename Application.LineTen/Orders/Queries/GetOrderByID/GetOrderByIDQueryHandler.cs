@@ -16,7 +16,7 @@ namespace Application.LineTen.Orders.Queries.GetOrderByID
 
         public async Task<OrderDTO> Handle(GetOrderByIDQuery request, CancellationToken cancellationToken)
         {
-            var order = _ordersRepository.GetById(new OrderID(request.OrderID));
+            var order = _ordersRepository.GetById(new OrderID(request.ID));
             if (order == null) return null;
             return OrderDTO.FromOrder(order);
         }

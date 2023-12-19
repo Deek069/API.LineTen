@@ -49,7 +49,7 @@ namespace API.LineTen.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetOrderSummary(Guid id)
         {
-            var query = new GetOrderSummaryQuery () { OrderID = id };
+            var query = new GetOrderSummaryQuery () { ID = id };
             var result = await _mediator.Send(query);
             if (result == null)
             {
@@ -75,7 +75,7 @@ namespace API.LineTen.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> DeleteOrder(Guid id)
         {
-            var command = new DeleteOrderCommand() { OrderID = id };
+            var command = new DeleteOrderCommand() { ID = id };
             var result = await _mediator.Send(command);
             if (!result) return NotFound();
             return Ok();

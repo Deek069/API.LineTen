@@ -33,7 +33,7 @@ namespace API.LineTen.Tests.Orders.Tests
                         .ReturnsAsync(true);
             var command = new UpdateOrderCommand()
             {
-                OrderID = _OrdersTestData.Order1.ID.value,
+                ID = _OrdersTestData.Order1.ID.value,
                 Status = OrderStatus.Complete
             };
 
@@ -52,7 +52,7 @@ namespace API.LineTen.Tests.Orders.Tests
                         .ReturnsAsync(false);
             var command = new UpdateOrderCommand()
             {
-                OrderID = OrderID.CreateUnique().value,
+                ID = OrderID.CreateUnique().value,
                 Status = OrderStatus.Complete
             };
 

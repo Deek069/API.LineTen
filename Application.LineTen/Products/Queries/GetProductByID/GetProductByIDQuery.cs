@@ -6,6 +6,6 @@ namespace Application.LineTen.Products.Queries.GetProductByID
 {
     public sealed class GetProductByIDQuery: IRequest<ProductDTO>
     {
-        public ProductID ProductID { get; set; }
+        public ProductID ID { get; set; }
     }
 }

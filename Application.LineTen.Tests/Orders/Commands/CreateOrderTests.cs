@@ -36,17 +36,19 @@ namespace Application.LineTen.Tests.Orders.Commands
         public async Task Handler_Should_CreateOrderAndReturnCreatedOrderDetails()
         {
             // Arrange
-            _customersRepoMock.Setup(repo => repo.GetById(_ordersTestData.CustomerTestData.Customer1.ID)).Returns(_ordersTestData.CustomerTestData.Customer1);
-            _customersRepoMock.Setup(repo => repo.CustomerExists(_ordersTestData.CustomerTestData.Customer1.ID)).Returns(true);
+            var customer = _ordersTestData.CustomerTestData.Customer1;
+            _customersRepoMock.Setup(repo => repo.GetById(customer.ID)).Returns(customer);
+            _customersRepoMock.Setup(repo => repo.CustomerExists(customer.ID)).Returns(true);
 
-            _productsRepoMock.Setup(repo => repo.GetById(_ordersTestData.ProductTestData.Product1.ID)).Returns(_ordersTestData.ProductTestData.Product1);
-            _productsRepoMock.Setup(repo => repo.ProductExists(_ordersTestData.ProductTestData.Product1.ID)).Returns(true);
+            var product = _ordersTestData.ProductTestData.Product1;
+            _productsRepoMock.Setup(repo => repo.GetById(product.ID)).Returns(product);
+            _productsRepoMock.Setup(repo => repo.ProductExists(product.ID)).Returns(true);
 
             // Act
             var command = new CreateOrderCommand()
             {
-                CustomerID = _ordersTestData.CustomerTestData.Customer1.ID.value,
-                ProductID = _ordersTestData.ProductTestData.Product1.ID.value
+                CustomerID = customer.ID.value,
+                ProductID = product.ID.value
             };
             var result = await _handler.Handle(command, default);
 
@@ -55,8 +57,8 @@ namespace Application.LineTen.Tests.Orders.Commands
             _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
 
             Assert.NotEqual(expected: Guid.Empty, actual: result.ID);
-            Assert.Equal(expected: command.CustomerID, actual: result.CustomerID);
-            Assert.Equal(expected: command.ProductID, actual: result.ProductID);
+            Assert.Equal(expected: customer.ID.value, actual: result.CustomerID);
+            Assert.Equal(expected: product.ID.value, actual: result.ProductID);
         }
     }
 }

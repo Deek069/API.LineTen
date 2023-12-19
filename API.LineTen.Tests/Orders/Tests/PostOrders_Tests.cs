@@ -29,10 +29,13 @@ namespace API.LineTen.Tests.Orders.Tests
             // Arrange
             _mockMediator.Setup(x => x.Send(It.IsAny<CreateOrderCommand>(), It.IsAny<CancellationToken>()))
                         .ReturnsAsync(OrderDTO.FromOrder(_OrdersTestData.Order1));
+
+            var customer = _OrdersTestData.Order1.Customer;
+            var product = _OrdersTestData.Order1.Product;
             var command = new CreateOrderCommand()
             {
-                CustomerID = _OrdersTestData.Order1.CustomerID.value,
-                ProductID = _OrdersTestData.Order1.ProductID.value,
+                CustomerID = customer.ID.value,
+                ProductID = product.ID.value,
             };
 
             // Act
@@ -43,8 +46,8 @@ namespace API.LineTen.Tests.Orders.Tests
 
             var Order = (OrderDTO)actionResult.Value;
             Assert.NotEqual(expected: Guid.Empty, actual: Order.ID);
-            Assert.Equal(expected: _OrdersTestData.Order1.CustomerID.value, actual: Order.CustomerID);
-            Assert.Equal(expected: _OrdersTestData.Order1.ProductID.value, actual: Order.ProductID);
+            Assert.Equal(expected: customer.ID.value, actual: Order.CustomerID);
+            Assert.Equal(expected: product.ID.value, actual: Order.ProductID);
         }
     }
 }

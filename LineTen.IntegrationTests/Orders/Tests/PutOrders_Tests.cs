@@ -19,7 +19,7 @@ namespace LineTen.IntegrationTests.Orders.Tests
             var newOrder = await methods.CreateOrder(testData.CreateOrderCommand1);
             var command = new UpdateOrderCommand()
             {
-                OrderID = newOrder.ID,
+                ID = newOrder.ID,
                 Status = OrderStatus.Complete
             };
 
@@ -38,7 +38,7 @@ namespace LineTen.IntegrationTests.Orders.Tests
             // Arrange
             var command = new UpdateOrderCommand()
             {
-                OrderID = OrderID.CreateUnique().value,
+                ID = OrderID.CreateUnique().value,
                 Status = OrderStatus.Complete
             };
 

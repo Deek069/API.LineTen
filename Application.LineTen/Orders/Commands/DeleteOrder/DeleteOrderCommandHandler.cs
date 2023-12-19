@@ -18,7 +18,7 @@ namespace Application.LineTen.Orders.Commands.DeleteOrder
 
         public async Task<bool> Handle(DeleteOrderCommand request, CancellationToken cancellationToken)
         {
-            var order = _ordersRepository.GetById(new OrderID(request.OrderID));
+            var order = _ordersRepository.GetById(new OrderID(request.ID));
             if (order == null) return false;
 
             _ordersRepository.Delete(order);

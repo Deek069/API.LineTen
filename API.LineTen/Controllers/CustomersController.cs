@@ -74,7 +74,7 @@ namespace API.LineTen.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> DeleteCustomer(Guid id)
         {
-            var command = new DeleteCustomerCommand() { CustomerID = id };
+            var command = new DeleteCustomerCommand() { ID = id };
             var result = await _mediator.Send(command);
             if (!result) return NotFound();
             return Ok();

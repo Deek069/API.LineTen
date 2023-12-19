@@ -18,7 +18,7 @@ namespace Application.LineTen.Orders.Commands.UpdateOrder
 
         public async Task<bool> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
         {
-            var order = _ordersRepository.GetById(new OrderID(request.OrderID));
+            var order = _ordersRepository.GetById(new OrderID(request.ID));
             if (order == null) return false;
 
             order.Status = request.Status;
