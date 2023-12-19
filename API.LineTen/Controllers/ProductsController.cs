@@ -25,6 +25,7 @@ namespace API.LineTen.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> CreateProduct(CreateProductCommand command)
         {
             var result = await _mediator.Send(command);
@@ -33,6 +34,7 @@ namespace API.LineTen.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetAll()
         {
             var query = new GetAllProductsQuery();
@@ -43,6 +45,7 @@ namespace API.LineTen.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetByID(Guid id)
         {
             var query = new GetProductByIDQuery() { ProductID = new ProductID(id) };
@@ -57,6 +60,7 @@ namespace API.LineTen.Controllers
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> UpdateProduct(UpdateProductCommand command)
         {
             var result = await _mediator.Send(command);
@@ -67,6 +71,7 @@ namespace API.LineTen.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> DeleteProduct(Guid id)
         {
             var command = new DeleteProductCommand() { ProductID = id };

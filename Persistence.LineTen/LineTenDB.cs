@@ -2,6 +2,8 @@
 using Domain.LineTen.Customers;
 using Domain.LineTen.Products;
 using Domain.LineTen.Orders;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Persistence.LineTen
 {
@@ -9,7 +11,19 @@ namespace Persistence.LineTen
     {
         public LineTenDB(DbContextOptions<LineTenDB> options) : base(options)
         {
+            try
+            {
+                var databaseCreator = Database.GetService<IDatabaseCreator>() as RelationalDatabaseCreator;
+                if (databaseCreator != null)
+                {
+                    if (!databaseCreator.CanConnect()) databaseCreator.Create();
+                    if (!databaseCreator.HasTables()) databaseCreator.CreateTables();
+                }
+            }
+            catch (Exception ex)
+            {
 
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

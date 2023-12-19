@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.LineTen.Tests", "Dom
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence.LineTen.Tests", "Persistence.LineTen.Tests\Persistence.LineTen.Tests.csproj", "{2B58534A-C10A-42A1-AAE3-94EB5DC25EA0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LineTen.IntegrationTests", "LineTen.IntegrationTests\LineTen.IntegrationTests.csproj", "{568D99C0-AA03-4D73-8AF7-6D57D508F6EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LineTen.IntegrationTests", "LineTen.IntegrationTests\LineTen.IntegrationTests.csproj", "{568D99C0-AA03-4D73-8AF7-6D57D508F6EA}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{5142B22F-DF69-4D66-980B-F032A7F69A9E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{568D99C0-AA03-4D73-8AF7-6D57D508F6EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{568D99C0-AA03-4D73-8AF7-6D57D508F6EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{568D99C0-AA03-4D73-8AF7-6D57D508F6EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5142B22F-DF69-4D66-980B-F032A7F69A9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5142B22F-DF69-4D66-980B-F032A7F69A9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5142B22F-DF69-4D66-980B-F032A7F69A9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5142B22F-DF69-4D66-980B-F032A7F69A9E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

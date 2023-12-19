@@ -10,15 +10,24 @@ using API.LineTen.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connection = builder.Configuration.GetConnectionString("dbConnection");
-builder.Services.AddDbContext<LineTenDB>(options =>
-    options.UseSqlServer(connection)
-);
+// ---------------------- DB Connection ---------------------------
+if (builder.Environment.EnvironmentName == "Test")
+{
+    builder.Services.AddDbContext<LineTenDB>(options => options.UseInMemoryDatabase(databaseName: "TestDatabase"));
+} else
+{
+    var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
+    var dbName = Environment.GetEnvironmentVariable("DB_NAME");
+    var dbPassword = Environment.GetEnvironmentVariable("DB_SA_PASSWORD");
+    var connection = $"Data Source={dbHost};Initial Catalog={dbName};User ID=sa;Password={dbPassword};Trust Server Certificate=True";
+    builder.Services.AddDbContext<LineTenDB>(options => options.UseSqlServer(connection));
+}
+
+// ---------------------- Dependancy Injection ---------------------------
 builder.Services.AddScoped<ICustomersRepository, CustomersRepository>();
 builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
 builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Application.LineTen.Customers.Queries.GetAllCustomers.GetAllCustomersQuery>());
 
 
@@ -26,6 +35,8 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Ap
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
+// ---------------------- Swagger Config ---------------------------
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
@@ -67,9 +78,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// ---------------------- Api Authorisation ---------------------------
 app.UseMiddleware<ApiKeyAuthMiddleware>();
-app.UseAuthorization();
 
+app.UseAuthorization();
 app.MapControllers();
 
 app.Run();

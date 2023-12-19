@@ -26,6 +26,7 @@ namespace API.LineTen.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> CreateOrder(CreateOrderCommand command)
         {
             var result = await _mediator.Send(command);
@@ -34,6 +35,7 @@ namespace API.LineTen.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetAll()
         {
             var query = new GetAllOrdersQuery();
@@ -44,6 +46,7 @@ namespace API.LineTen.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetOrderSummary(Guid id)
         {
             var query = new GetOrderSummaryQuery () { OrderID = id };
@@ -58,6 +61,7 @@ namespace API.LineTen.Controllers
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> UpdateOrder(UpdateOrderCommand command)
         {
             var result = await _mediator.Send(command);
@@ -68,6 +72,7 @@ namespace API.LineTen.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> DeleteOrder(Guid id)
         {
             var command = new DeleteOrderCommand() { OrderID = id };

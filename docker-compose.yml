@@ -1,0 +1,33 @@
+version: '3.4'
+
+networks:
+  dlk-lineten-network:
+
+services:
+  linetenSQLServer:
+    container_name: dlk-lineten-SQLServer
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports: 
+      - 8002:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=u2GUuExnKeQ3PZtYWeAa
+    networks:
+      - dlk-lineten-network
+  api.lineten:
+    container_name: dlk-lineten-api-app
+    image: ${DOCKER_REGISTRY-}apilineten
+    build:
+      context: .
+      dockerfile: API.LineTen/Dockerfile
+    ports:
+      - 8001:80
+    depends_on: 
+      - linetenSQLServer
+    environment:
+      - DB_HOST=dlk-lineten-SQLServer
+      - DB_NAME=linetendb
+      - DB_SA_PASSWORD=u2GUuExnKeQ3PZtYWeAa
+    networks:
+      - dlk-lineten-network
+      
