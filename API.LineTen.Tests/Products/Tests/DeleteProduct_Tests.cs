@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using MediatR;
+using Application.LineTen.Products.Exceptions;
 
 namespace API.LineTen.Tests.Products.Tests
 {
@@ -27,8 +28,6 @@ namespace API.LineTen.Tests.Products.Tests
         public async Task Delete_Should_ReturnOK_IfAValidIDIsProvided()
         {
             // Arrange
-            _mockMediator.Setup(x => x.Send(It.IsAny<DeleteProductCommand>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(true);
 
             // Act
             var result = (ActionResult)await _ProductsController.DeleteProduct(_ProductsTestData.Product1.ID.value);
@@ -41,14 +40,15 @@ namespace API.LineTen.Tests.Products.Tests
         public async Task Delete_Should_ReturnNotFound_IfAnInvalidIDIsProvided()
         {
             // Arrange
+            var productID = ProductID.CreateUnique();
             _mockMediator.Setup(x => x.Send(It.IsAny<DeleteProductCommand>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(false);
+                        .Throws(new ProductNotFoundException(productID));
 
             // Act
-            var result = (ActionResult)await _ProductsController.DeleteProduct(ProductID.CreateUnique().value);
+            var result = (ActionResult)await _ProductsController.DeleteProduct(productID.value);
 
             // Assert
-            var actionResult = Assert.IsType<NotFoundResult>(result);
+            var actionResult = Assert.IsType<NotFoundObjectResult>(result);
         }
     }
 }

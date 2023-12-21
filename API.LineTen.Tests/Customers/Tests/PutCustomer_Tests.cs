@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using MediatR;
 using Domain.LineTen.Customers;
+using Application.LineTen.Customers.Exceptions;
 
 namespace API.LineTen.Tests.Customers.Tests
 {
@@ -29,8 +30,6 @@ namespace API.LineTen.Tests.Customers.Tests
         public async Task PutCustomer_Should_ReturnOK_WithValidID()
         {
             // Arrange
-            _mockMediator.Setup(x => x.Send(It.IsAny<UpdateCustomerCommand>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(true);
             var customerID = _customerTestData.Customer1.ID.value;
             var request = new UpdateCustomerRequest(
                 _customerTestData.Customer1.FirstName,
@@ -50,9 +49,9 @@ namespace API.LineTen.Tests.Customers.Tests
         public async Task PutCustomer_Should_ReturnNotFound_WithInvalidID()
         {
             // Arrange
+            var customerID = CustomerID.CreateUnique();
             _mockMediator.Setup(x => x.Send(It.IsAny<UpdateCustomerCommand>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(false);
-            var customerID = CustomerID.CreateUnique().value;
+                        .Throws(new CustomerNotFoundException(customerID));
             var request = new UpdateCustomerRequest(
                 "Marge",
                 "Simpson",
@@ -61,10 +60,10 @@ namespace API.LineTen.Tests.Customers.Tests
             );
 
             // Act
-            var result = (ActionResult)await _customersController.UpdateCustomer(customerID, request);
+            var result = (ActionResult)await _customersController.UpdateCustomer(customerID.value, request);
 
             // Assert
-            var actionResult = Assert.IsType<NotFoundResult>(result);
+            var actionResult = Assert.IsType<NotFoundObjectResult>(result);
         }
     }
 }

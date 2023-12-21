@@ -1,8 +1,13 @@
-﻿using Application.LineTen.Orders.DTOs;
+﻿using Application.LineTen.Orders.Commands.DeleteOrder;
+using Application.LineTen.Orders.Commands.UpdateOrder;
+using Application.LineTen.Orders.DTOs;
+using Application.LineTen.Orders.Exceptions;
+using Application.LineTen.Orders.Queries.GetOrderSummary;
 using Application.LineTen.Products.Commands.CreateProduct;
 using Application.LineTen.Products.Commands.DeleteProduct;
 using Application.LineTen.Products.Commands.UpdateProduct;
 using Application.LineTen.Products.DTOs;
+using Application.LineTen.Products.Exceptions;
 using Application.LineTen.Products.Queries.GetAllProducts;
 using Application.LineTen.Products.Queries.GetProductByID;
 using Domain.LineTen.Products;
@@ -30,8 +35,15 @@ namespace API.LineTen.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> CreateProduct(CreateProductCommand command)
         {
-            var result = await _mediator.Send(command);
-            return CreatedAtAction(nameof(CreateProduct), new { id = result.ID }, result);
+            try
+            {
+                var result = await _mediator.Send(command);
+                return CreatedAtAction(nameof(CreateProduct), new { id = result.ID }, result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet]
@@ -50,13 +62,20 @@ namespace API.LineTen.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetByID(Guid id)
         {
-            var query = new GetProductByIDQuery(new ProductID(id));
-            var result = await _mediator.Send(query);
-            if (result == null)
+            try
             {
-                return NotFound();
+                var query = new GetProductByIDQuery(new ProductID(id));
+                var result = await _mediator.Send(query);
+                return Ok(result);
             }
-            return Ok(result);
+            catch (ProductNotFoundException ox)
+            {
+                return NotFound(ox.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut("{id}")]
@@ -65,10 +84,20 @@ namespace API.LineTen.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> UpdateProduct(Guid id, [FromBody] UpdateProductRequest request)
         {
-            var command = new UpdateProductCommand(id, request.Name, request.Description, request.SKU);
-            var result = await _mediator.Send(command);
-            if (!result) return NotFound();
-            return Ok();
+            try
+            {
+                var command = new UpdateProductCommand(id, request.Name, request.Description, request.SKU);
+                await _mediator.Send(command);
+                return Ok();
+            }
+            catch (ProductNotFoundException px)
+            {
+                return NotFound(px.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpDelete("{id}")]
@@ -77,10 +106,20 @@ namespace API.LineTen.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> DeleteProduct(Guid id)
         {
-            var command = new DeleteProductCommand(id);
-            var result = await _mediator.Send(command);
-            if (!result) return NotFound();
-            return Ok();
+            try
+            {
+                var command = new DeleteProductCommand(id);
+                await _mediator.Send(command);
+                return Ok();
+            }
+            catch (ProductNotFoundException px)
+            {
+                return NotFound(px.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

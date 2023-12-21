@@ -1,11 +1,12 @@
 ﻿using Application.LineTen.Common.Interfaces;
+using Application.LineTen.Customers.Exceptions;
 using Application.LineTen.Customers.Interfaces;
 using Domain.LineTen.Customers;
 using MediatR;
 
 namespace Application.LineTen.Customers.Commands.UpdateCustomer
 {
-    public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand, bool>
+    public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand>
     {
         private readonly ICustomersRepository _customersRepository;
         private readonly IUnitOfWork _unitOfWork;
@@ -16,10 +17,11 @@ namespace Application.LineTen.Customers.Commands.UpdateCustomer
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<bool> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
+        public async Task Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
         {
-            var customer = _customersRepository.GetById(new CustomerID(request.ID));
-            if (customer == null) return false;
+            var customerID = new CustomerID(request.ID);
+            var customer = _customersRepository.GetById(customerID);
+            if (customer == null) throw new CustomerNotFoundException(customerID);
 
             customer.FirstName = request.FirstName;
             customer.LastName = request.LastName;
@@ -27,7 +29,6 @@ namespace Application.LineTen.Customers.Commands.UpdateCustomer
             customer.Email = request.Email;
             _customersRepository.Update(customer);
             await _unitOfWork.SaveChangesAsync();
-            return true;
         }
     }
 }

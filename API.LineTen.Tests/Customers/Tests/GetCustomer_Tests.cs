@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using MediatR;
+using Application.LineTen.Customers.Exceptions;
 
 namespace API.LineTen.Tests.Customers.Tests
 {
@@ -45,14 +46,15 @@ namespace API.LineTen.Tests.Customers.Tests
         public async Task GetCustomer_Should_ReturnNotFound_WithInvalidID()
         {
             // Arrange
+            var customerID = CustomerID.CreateUnique();
             _mockMediator.Setup(x => x.Send(It.IsAny<GetCustomerByIDQuery>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(valueFunction: () => null);
+                        .Throws(new CustomerNotFoundException(customerID));
 
             // Act
-            var result = (ActionResult)await _customersController.GetByID(CustomerID.CreateUnique().value);
+            var result = (ActionResult)await _customersController.GetByID(customerID.value);
 
             // Assert
-            var actionResult = Assert.IsType<NotFoundResult>(result);
+            var actionResult = Assert.IsType<NotFoundObjectResult>(result);
         }
     }
 }

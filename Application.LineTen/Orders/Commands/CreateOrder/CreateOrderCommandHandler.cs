@@ -7,6 +7,8 @@ using Application.LineTen.Common.Interfaces;
 using MediatR;
 using Domain.LineTen.Customers;
 using Domain.LineTen.Products;
+using Application.LineTen.Customers.Exceptions;
+using Application.LineTen.Products.Exceptions;
 
 namespace Application.LineTen.Orders.Commands.CreateOrder
 {
@@ -35,11 +37,11 @@ namespace Application.LineTen.Orders.Commands.CreateOrder
 
             if (!_customersRepository.CustomerExists(customerID))
             {
-                throw new ArgumentException("Customer does not exist.");
+                throw new CustomerNotFoundException(customerID);
             }
             if (!_productsRepository.ProductExists(productID))
             {
-                throw new ArgumentException("Product does not exist.");
+                throw new ProductNotFoundException(productID);
             }
 
             var order = new Order()

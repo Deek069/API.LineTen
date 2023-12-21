@@ -2,6 +2,7 @@
 using Application.LineTen.Orders.DTOs;
 using MediatR;
 using Domain.LineTen.Orders;
+using Application.LineTen.Orders.Exceptions;
 
 namespace Application.LineTen.Orders.Queries.GetOrderSummary
 {
@@ -16,8 +17,9 @@ namespace Application.LineTen.Orders.Queries.GetOrderSummary
 
         public async Task<OrderSummaryDTO> Handle(GetOrderSummaryQuery request, CancellationToken cancellationToken)
         {
-            var order = _ordersRepository.GetById(new OrderID(request.ID));
-            if (order == null) return null;
+            var orderID = new OrderID(request.ID);
+            var order = _ordersRepository.GetById(orderID);
+            if (order == null) throw new OrderNotFoundException(orderID);
             var result = OrderSummaryDTO.FromOrder(order);
             return result;
         }

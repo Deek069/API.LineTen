@@ -3,6 +3,7 @@ using Domain.LineTen.Orders;
 using Application.LineTen.Orders.Commands.DeleteOrder;
 using Application.LineTen.Orders.Interfaces;
 using Application.LineTen.Common.Interfaces;
+using Application.LineTen.Orders.Exceptions;
 
 namespace Application.LineTen.Tests.Orders.Commands
 {
@@ -22,33 +23,54 @@ namespace Application.LineTen.Tests.Orders.Commands
         }
 
         [Fact]
-        public async Task Handler_Should_DeleteOrderAndReturnTrue_IfValidIDProvided()
+        public async Task Handler_Should_DeleteOrder_IfValidIDProvided()
         {
-            // Arrange
-            var command = new DeleteOrderCommand(_ordersTestData.Order1.ID.value);
-            _ordersRepoMock.Setup(repo => repo.GetById(_ordersTestData.Order1.ID)).Returns(_ordersTestData.Order1);
+            try
+            {
+                // Arrange
+                var command = new DeleteOrderCommand(_ordersTestData.Order1.ID.value);
+                _ordersRepoMock.Setup(repo => repo.GetById(_ordersTestData.Order1.ID)).Returns(_ordersTestData.Order1);
 
-            // Act
-            await _handler.Handle(command, default);
+                // Act
+                await _handler.Handle(command, default);
 
-            // Assert
-            _ordersRepoMock.Verify(repo => repo.Delete(It.IsAny<Order>()), Times.Once);
-            _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+                // Assert
+                _ordersRepoMock.Verify(repo => repo.Delete(It.IsAny<Order>()), Times.Once);
+                _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+            }
+            catch(Exception ex) 
+            {
+                Assert.Fail($"An exception occurred: {ex.Message}");
+            }
         }
 
         [Fact]
-        public async Task Handler_Should_ReturnFalse_IfInvalidIDProvided()
+        public async Task Handler_Should_ThrowNotFound_IfInvalidIDProvided()
         {
-            // Arrange
-            var command = new DeleteOrderCommand(OrderID.CreateUnique().value);
-            _ordersRepoMock.Setup(repo => repo.GetById(It.IsAny<OrderID>())).Returns(valueFunction: () => null);
+            try
+            {
+                // Arrange
+                var command = new DeleteOrderCommand(OrderID.CreateUnique().value);
+                _ordersRepoMock.Setup(repo => repo.GetById(It.IsAny<OrderID>())).Returns(valueFunction: () => null);
 
-            // Act
-            await _handler.Handle(command, default);
+                // Act
+                await _handler.Handle(command, default);
 
-            // Assert
-            _ordersRepoMock.Verify(repo => repo.Delete(It.IsAny<Order>()), Times.Never);
-            _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+                // Assert
+                Assert.Fail("OrderNotFoundException not thrown");
+
+            }
+            catch (OrderNotFoundException ox)
+            {
+                // Assert
+                _ordersRepoMock.Verify(repo => repo.Delete(It.IsAny<Order>()), Times.Never);
+                _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail($"An exception occurred: {ex.Message}");
+            }
         }
     }
 }

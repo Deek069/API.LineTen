@@ -1,11 +1,12 @@
 ﻿using Application.LineTen.Common.Interfaces;
+using Application.LineTen.Orders.Exceptions;
 using Application.LineTen.Orders.Interfaces;
 using Domain.LineTen.Orders;
 using MediatR;
 
 namespace Application.LineTen.Orders.Commands.UpdateOrder
 {
-    public sealed class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand, bool>
+    public sealed class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand>
     {
         private IOrdersRepository _ordersRepository;
         private IUnitOfWork _unitOfWork;
@@ -16,15 +17,15 @@ namespace Application.LineTen.Orders.Commands.UpdateOrder
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<bool> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
+        public async Task Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
         {
-            var order = _ordersRepository.GetById(new OrderID(request.ID));
-            if (order == null) return false;
+            var orderID = new OrderID(request.ID);
+            var order = _ordersRepository.GetById(orderID);
+            if (order == null) throw new OrderNotFoundException(orderID);
 
             order.Status = request.Status;
             _ordersRepository.Update(order);
             await _unitOfWork.SaveChangesAsync();
-            return true;
         }
     }
 }

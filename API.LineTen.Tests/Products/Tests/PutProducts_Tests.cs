@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using MediatR;
 using Domain.LineTen.Products;
+using Application.LineTen.Products.Exceptions;
 
 namespace API.LineTen.Tests.Products.Tests
 {
@@ -29,8 +30,6 @@ namespace API.LineTen.Tests.Products.Tests
         public async Task PutProduct_Should_ReturnOK_WithValidID()
         {
             // Arrange
-            _mockMediator.Setup(x => x.Send(It.IsAny<UpdateProductCommand>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(true);
             var productID = _ProductsTestData.Product1.ID.value;
             var request = new UpdateProductRequest(
                 _ProductsTestData.Product1.Name,
@@ -49,9 +48,9 @@ namespace API.LineTen.Tests.Products.Tests
         public async Task PutProduct_Should_ReturnNotFound_WithInvalidID()
         {
             // Arrange
+            var productID = ProductID.CreateUnique();
             _mockMediator.Setup(x => x.Send(It.IsAny<UpdateProductCommand>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(false);
-            var productID = ProductID.CreateUnique().value;
+                        .Throws(new ProductNotFoundException(productID));
             var request = new UpdateProductRequest(
                 "Triumph Street Triple",
                 "The Triumph Street Triple is a naked or streetfighter motorcycle made by Triumph Motorcycles, first released towards the end of 2007. The bike is closely modelled on the Speed Triple 1050 but uses a re-tuned inline three cylinder 675 cc engine from the Daytona 675 sport bike, which was released in 2006.",
@@ -59,10 +58,10 @@ namespace API.LineTen.Tests.Products.Tests
             );
 
             // Act
-            var result = (ActionResult)await _ProductsController.UpdateProduct(productID, request);
+            var result = (ActionResult)await _ProductsController.UpdateProduct(productID.value, request);
 
             // Assert
-            var actionResult = Assert.IsType<NotFoundResult>(result);
+            var actionResult = Assert.IsType<NotFoundObjectResult>(result);
         }
     }
 }

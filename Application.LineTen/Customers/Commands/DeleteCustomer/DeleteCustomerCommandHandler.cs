@@ -1,11 +1,12 @@
 ﻿using Application.LineTen.Common.Interfaces;
+using Application.LineTen.Customers.Exceptions;
 using Application.LineTen.Customers.Interfaces;
 using Domain.LineTen.Customers;
 using MediatR;
 
 namespace Application.LineTen.Customers.Commands.DeleteCustomer
 {
-    public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand, bool>
+    public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand>
     {
         private ICustomersRepository _customersRepository;
         private IUnitOfWork _unitOfWork;
@@ -16,14 +17,14 @@ namespace Application.LineTen.Customers.Commands.DeleteCustomer
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<bool> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
+        public async Task Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
         {
-            var customer = _customersRepository.GetById(new CustomerID(request.ID));
-            if (customer == null) return false;
+            var customerID = new CustomerID(request.ID);
+            var customer = _customersRepository.GetById(customerID);
+            if (customer == null) throw new CustomerNotFoundException(customerID);
 
             _customersRepository.Delete(customer);
             await _unitOfWork.SaveChangesAsync();
-            return true;
         }
     }
 }

@@ -1,11 +1,12 @@
 ﻿using Application.LineTen.Common.Interfaces;
+using Application.LineTen.Products.Exceptions;
 using Application.LineTen.Products.Interfaces;
 using Domain.LineTen.Products;
 using MediatR;
 
 namespace Application.LineTen.Products.Commands.DeleteProduct
 {
-    public sealed class DeleteProductCommandHandler: IRequestHandler<DeleteProductCommand, bool>
+    public sealed class DeleteProductCommandHandler: IRequestHandler<DeleteProductCommand>
     {
         private IProductsRepository _productsRepository;
         private IUnitOfWork _unitOfWork;
@@ -16,14 +17,14 @@ namespace Application.LineTen.Products.Commands.DeleteProduct
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<bool> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
+        public async Task Handle(DeleteProductCommand request, CancellationToken cancellationToken)
         {
-            var order = _productsRepository.GetById(new ProductID(request.ID));
-            if (order == null) return false;
+            var productID = new ProductID(request.ID);
+            var product = _productsRepository.GetById(productID);
+            if (product == null) throw new ProductNotFoundException(productID);
 
-            _productsRepository.Delete(order);
+            _productsRepository.Delete(product);
             await _unitOfWork.SaveChangesAsync();
-            return true;
         }
     }
 }

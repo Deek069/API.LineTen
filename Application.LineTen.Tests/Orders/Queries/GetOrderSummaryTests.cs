@@ -1,23 +1,29 @@
-﻿using Moq;
-using Domain.LineTen.Orders;
-using Application.LineTen.Orders.Queries.GetOrderByID;
-using Application.LineTen.Orders.Interfaces;
-using Application.LineTen.Orders.DTOs;
+﻿using Application.LineTen.Orders.DTOs;
 using Application.LineTen.Orders.Exceptions;
+using Application.LineTen.Orders.Interfaces;
+using Application.LineTen.Orders.Queries.GetOrderByID;
+using Application.LineTen.Orders.Queries.GetOrderSummary;
+using Domain.LineTen.Orders;
+using Moq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Application.LineTen.Tests.Orders.Queries
 {
-    public class GetOrderByIDTests
+    public class GetOrderSummaryTests
     {
         private readonly OrdersTestData _ordersTestData;
-        private readonly GetOrderByIDQueryHandler _handler;
+        private readonly GetOrderSummaryQueryHandler _handler;
         private readonly Mock<IOrdersRepository> _ordersRepoMock;
 
-        public GetOrderByIDTests()
+        public GetOrderSummaryTests()
         {
             _ordersTestData = new OrdersTestData();
             _ordersRepoMock = new Mock<IOrdersRepository>();
-            _handler = new GetOrderByIDQueryHandler(_ordersRepoMock.Object);
+            _handler = new GetOrderSummaryQueryHandler(_ordersRepoMock.Object);
         }
 
         [Fact]
@@ -26,14 +32,14 @@ namespace Application.LineTen.Tests.Orders.Queries
             try
             {
                 // Arrange
-                var query = new GetOrderByIDQuery(_ordersTestData.Order1.ID.value);
+                var expectedOrder = OrderSummaryDTO.FromOrder(_ordersTestData.Order1);
                 _ordersRepoMock.Setup(repo => repo.GetById(_ordersTestData.Order1.ID)).Returns(_ordersTestData.Order1);
 
                 // Act
+                var query = new GetOrderSummaryQuery(_ordersTestData.Order1.ID.value);
                 var result = await _handler.Handle(query, default);
 
                 // Assert
-                var expectedOrder = OrderDTO.FromOrder(_ordersTestData.Order1);
                 Assert.Equal(expected: expectedOrder, actual: result);
             }
             catch (Exception ex)
@@ -49,10 +55,10 @@ namespace Application.LineTen.Tests.Orders.Queries
             {
                 // Arrange
                 var orderID = OrderID.CreateUnique();
-                var query = new GetOrderByIDQuery(orderID.value);
                 _ordersRepoMock.Setup(repo => repo.GetById(It.IsAny<OrderID>())).Returns(valueFunction: () => null);
 
                 // Act
+                var query = new GetOrderSummaryQuery(orderID.value);
                 var result = await _handler.Handle(query, default);
 
                 // Assert

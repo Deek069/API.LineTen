@@ -3,6 +3,8 @@ using Domain.LineTen.Customers;
 using Application.LineTen.Customers.Commands.DeleteCustomer;
 using Application.LineTen.Customers.Interfaces;
 using Application.LineTen.Common.Interfaces;
+using System.Linq.Expressions;
+using Application.LineTen.Customers.Exceptions;
 
 namespace Application.LineTen.Tests.Customers.Commands
 {
@@ -22,35 +24,51 @@ namespace Application.LineTen.Tests.Customers.Commands
         }
 
         [Fact]
-        public async Task Handler_Should_DeleteCustomerAndReturnTrue_IfValidIDProvided()
+        public async Task Handler_Should_DeleteCustomer_IfValidIDProvided()
         {
-            // Arrange
-            var command = new DeleteCustomerCommand(CustomerID.CreateUnique().value);
-            _repositoryMock.Setup(repo => repo.GetById(new CustomerID(command.ID))).Returns(_customerTestData.Customer1);
+            try
+            {
+                // Arrange
+                var command = new DeleteCustomerCommand(CustomerID.CreateUnique().value);
+                _repositoryMock.Setup(repo => repo.GetById(new CustomerID(command.ID))).Returns(_customerTestData.Customer1);
 
-            // Act
-            var result = await _handler.Handle(command, default);
+                // Act
+                await _handler.Handle(command, default);
 
-            // Assert
-            _repositoryMock.Verify(repo => repo.Delete(It.IsAny<Customer>()), Times.Once);
-            _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
-            Assert.True(result);
+                // Assert
+                _repositoryMock.Verify(repo => repo.Delete(It.IsAny<Customer>()), Times.Once);
+                _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail($"An exception occured: {ex.Message}");
+            }
         }
 
         [Fact]
-        public async Task Handler_Should_ReturnFalse_IfInvalidIDProvided()
+        public async Task Handler_Should_ThrowAnException_IfInvalidIDProvided()
         {
-            // Arrange
-            var command = new DeleteCustomerCommand(CustomerID.CreateUnique().value);
-            _repositoryMock.Setup(repo => repo.GetById(It.IsAny<CustomerID>())).Returns(valueFunction: () => null);
+            try
+            {
+                // Arrange
+                var command = new DeleteCustomerCommand(CustomerID.CreateUnique().value);
+                _repositoryMock.Setup(repo => repo.GetById(It.IsAny<CustomerID>())).Returns(valueFunction: () => null);
 
-            // Act
-            var result = await _handler.Handle(command, default);
+                // Act
+                await _handler.Handle(command, default);
 
-            // Assert
-            _repositoryMock.Verify(repo => repo.Delete(It.IsAny<Customer>()), Times.Never);
-            _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
-            Assert.False(result);
+                // Assert
+                Assert.Fail("CustomerNotFound exception not thrown.");
+            }
+            catch (CustomerNotFoundException ex)
+            {
+                _repositoryMock.Verify(repo => repo.Delete(It.IsAny<Customer>()), Times.Never);
+                _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail($"An exception occured: {ex.Message}");
+            }
         }
     }
 }

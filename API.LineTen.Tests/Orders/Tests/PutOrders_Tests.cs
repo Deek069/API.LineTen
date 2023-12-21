@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using MediatR;
 using Domain.LineTen.Orders;
+using Application.LineTen.Orders.Exceptions;
 
 namespace API.LineTen.Tests.Orders.Tests
 {
@@ -29,8 +30,6 @@ namespace API.LineTen.Tests.Orders.Tests
         public async Task PutOrder_Should_ReturnOK_WithValidID()
         {
             // Arrange
-            _mockMediator.Setup(x => x.Send(It.IsAny<UpdateOrderCommand>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(true);
             var orderID = _OrdersTestData.Order1.ID.value;
             var request= new UpdateOrderRequest(OrderStatus.Complete);
 
@@ -45,16 +44,16 @@ namespace API.LineTen.Tests.Orders.Tests
         public async Task PutOrder_Should_ReturnNotFound_WithInvalidID()
         {
             // Arrange
+            var orderID = OrderID.CreateUnique();
             _mockMediator.Setup(x => x.Send(It.IsAny<UpdateOrderCommand>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(false);
-            var orderID = OrderID.CreateUnique().value;
+                        .Throws(new OrderNotFoundException(orderID));
             var request = new UpdateOrderRequest(OrderStatus.Complete);
 
             // Act
-            var result = (ActionResult)await _OrdersController.UpdateOrder(orderID, request);
+            var result = (ActionResult)await _OrdersController.UpdateOrder(orderID.value, request);
 
             // Assert
-            var actionResult = Assert.IsType<NotFoundResult>(result);
+            var actionResult = Assert.IsType<NotFoundObjectResult>(result);
         }
     }
 }

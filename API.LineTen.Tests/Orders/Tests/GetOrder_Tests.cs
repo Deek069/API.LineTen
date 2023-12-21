@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using MediatR;
 using Application.LineTen.Orders.Queries.GetOrderSummary;
+using Application.LineTen.Orders.Exceptions;
 
 namespace API.LineTen.Tests.Orders.Tests
 {
@@ -45,14 +46,15 @@ namespace API.LineTen.Tests.Orders.Tests
         public async Task GetOrder_Should_ReturnNotFound_WithInvalidID()
         {
             // Arrange
+            var orderID = OrderID.CreateUnique();
             _mockMediator.Setup(x => x.Send(It.IsAny<GetOrderSummaryQuery>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(valueFunction: () => null);
+                        .Throws(new OrderNotFoundException(orderID));
 
             // Act
-            var result = (ActionResult)await _OrdersController.GetOrderSummary(OrderID.CreateUnique().value);
+            var result = (ActionResult)await _OrdersController.GetOrderSummary(orderID.value);
 
             // Assert
-            var actionResult = Assert.IsType<NotFoundResult>(result);
+            var actionResult = Assert.IsType<NotFoundObjectResult>(result);
         }
     }
 }

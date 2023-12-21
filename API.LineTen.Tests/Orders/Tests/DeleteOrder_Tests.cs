@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using MediatR;
+using Application.LineTen.Orders.Exceptions;
 
 namespace API.LineTen.Tests.Orders.Tests
 {
@@ -27,11 +28,10 @@ namespace API.LineTen.Tests.Orders.Tests
         public async Task Delete_Should_ReturnOK_IfAValidIDIsProvided()
         {
             // Arrange
-            _mockMediator.Setup(x => x.Send(It.IsAny<DeleteOrderCommand>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(true);
+            var orderID = _OrdersTestData.Order1.ID;
 
             // Act
-            var result = (ActionResult)await _OrdersController.DeleteOrder(_OrdersTestData.Order1.ID.value);
+            var result = (ActionResult)await _OrdersController.DeleteOrder(orderID.value);
 
             // Assert
             var actionResult = Assert.IsType<OkResult>(result);
@@ -41,14 +41,15 @@ namespace API.LineTen.Tests.Orders.Tests
         public async Task Delete_Should_ReturnNotFound_IfAnInvalidIDIsProvided()
         {
             // Arrange
+            var orderID = OrderID.CreateUnique();
             _mockMediator.Setup(x => x.Send(It.IsAny<DeleteOrderCommand>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(false);
+                        .Throws(new OrderNotFoundException(orderID));
 
             // Act
-            var result = (ActionResult)await _OrdersController.DeleteOrder(OrderID.CreateUnique().value);
+            var result = (ActionResult)await _OrdersController.DeleteOrder(orderID.value);
 
             // Assert
-            var actionResult = Assert.IsType<NotFoundResult>(result);
+            var actionResult = Assert.IsType<NotFoundObjectResult>(result);
         }
     }
 }

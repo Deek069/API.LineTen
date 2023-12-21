@@ -1,11 +1,12 @@
 ﻿using Application.LineTen.Common.Interfaces;
+using Application.LineTen.Orders.Exceptions;
 using Application.LineTen.Orders.Interfaces;
 using Domain.LineTen.Orders;
 using MediatR;
 
 namespace Application.LineTen.Orders.Commands.DeleteOrder
 {
-    public sealed class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand, bool>
+    public sealed class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand>
     {
         private IOrdersRepository _ordersRepository;
         private IUnitOfWork _unitOfWork;
@@ -16,14 +17,14 @@ namespace Application.LineTen.Orders.Commands.DeleteOrder
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<bool> Handle(DeleteOrderCommand request, CancellationToken cancellationToken)
+        public async Task Handle(DeleteOrderCommand request, CancellationToken cancellationToken)
         {
-            var order = _ordersRepository.GetById(new OrderID(request.ID));
-            if (order == null) return false;
+            var orderID = new OrderID(request.ID);
+            var order = _ordersRepository.GetById(orderID);
+            if (order == null) throw new OrderNotFoundException(orderID);
 
             _ordersRepository.Delete(order);
             await _unitOfWork.SaveChangesAsync();
-            return true;
         }
     }
 }

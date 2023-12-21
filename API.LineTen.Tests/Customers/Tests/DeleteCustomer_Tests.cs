@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using MediatR;
+using Application.LineTen.Customers.Exceptions;
 
 namespace API.LineTen.Tests.Customers.Tests
 {
@@ -27,8 +28,7 @@ namespace API.LineTen.Tests.Customers.Tests
         public async Task Delete_Should_ReturnOK_IfAValidIDIsProvided()
         {
             // Arrange
-            _mockMediator.Setup(x => x.Send(It.IsAny<DeleteCustomerCommand>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(true);
+            var customerID = _customerTestData.Customer1.ID;
 
             // Act
             var result = (ActionResult)await _customersController.DeleteCustomer(_customerTestData.Customer1.ID.value);
@@ -41,14 +41,15 @@ namespace API.LineTen.Tests.Customers.Tests
         public async Task Delete_Should_ReturnNotFound_IfAnInvalidIDIsProvided()
         {
             // Arrange
+            var customerID = CustomerID.CreateUnique();
             _mockMediator.Setup(x => x.Send(It.IsAny<DeleteCustomerCommand>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(false);
+                        .Throws(new CustomerNotFoundException(customerID));
 
             // Act
-            var result = (ActionResult)await _customersController.DeleteCustomer(CustomerID.CreateUnique().value);
+            var result = (ActionResult)await _customersController.DeleteCustomer(customerID.value);
 
             // Assert
-            var actionResult = Assert.IsType<NotFoundResult>(result);
+            var actionResult = Assert.IsType<NotFoundObjectResult>(result);
         }
     }
 }

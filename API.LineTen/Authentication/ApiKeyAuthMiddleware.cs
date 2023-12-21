@@ -3,6 +3,8 @@
     public class ApiKeyAuthMiddleware
     {
         private readonly RequestDelegate _next;
+
+        // Note: These should be retrieved from a repository - fixed for this task
         private const string ApiKeyHeaderName = "x-api-key";
         private const string ValidApiKey = "ec6254fd-ea6b-4f67-afc6-406c946ed854";
 

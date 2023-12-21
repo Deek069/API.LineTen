@@ -2,8 +2,10 @@
 using Application.LineTen.Customers.Commands.DeleteCustomer;
 using Application.LineTen.Customers.Commands.UpdateCustomer;
 using Application.LineTen.Customers.DTOs;
+using Application.LineTen.Customers.Exceptions;
 using Application.LineTen.Customers.Queries.GetAllCustomers;
 using Application.LineTen.Customers.Queries.GetCustomerByID;
+using Application.LineTen.Products.Exceptions;
 using Domain.LineTen.Customers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -29,8 +31,15 @@ namespace API.LineTen.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> CreateCustomer(CreateCustomerCommand command)
         {
-            var result = await _mediator.Send(command);
-            return CreatedAtAction(nameof(CreateCustomer), new { id = result.ID }, result);
+            try
+            {
+                var result = await _mediator.Send(command);
+                return CreatedAtAction(nameof(CreateCustomer), new { id = result.ID }, result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet]
@@ -50,12 +59,19 @@ namespace API.LineTen.Controllers
         public async Task<IActionResult> GetByID(Guid id)
         {
             var query = new GetCustomerByIDQuery(new CustomerID(id));
-            var result = await _mediator.Send(query);
-            if (result == null)
+            try
             {
-                return NotFound();
+                var result = await _mediator.Send(query);
+                return Ok(result);
             }
-            return Ok(result);
+            catch (CustomerNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut("{id}")]
@@ -65,9 +81,19 @@ namespace API.LineTen.Controllers
         public async Task<IActionResult> UpdateCustomer(Guid id, [FromBody] UpdateCustomerRequest request)
         {
             var command = new UpdateCustomerCommand(id, request.FirstName, request.LastName, request.Phone, request.Email);
-            var result = await _mediator.Send(command);
-            if (!result) return NotFound();
-            return Ok();
+            try
+            {
+                await _mediator.Send(command);
+                return Ok();
+            }
+            catch (CustomerNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpDelete("{id}")]
@@ -77,9 +103,19 @@ namespace API.LineTen.Controllers
         public async Task<IActionResult> DeleteCustomer(Guid id)
         {
             var command = new DeleteCustomerCommand(id);
-            var result = await _mediator.Send(command);
-            if (!result) return NotFound();
-            return Ok();
+            try
+            {
+                await _mediator.Send(command);
+                return Ok();
+            }
+            catch (CustomerNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using MediatR;
+using Application.LineTen.Products.Exceptions;
 
 namespace API.LineTen.Tests.Products.Tests
 {
@@ -45,14 +46,15 @@ namespace API.LineTen.Tests.Products.Tests
         public async Task GetProduct_Should_ReturnNotFound_WithInvalidID()
         {
             // Arrange
+            var productID = ProductID.CreateUnique();
             _mockMediator.Setup(x => x.Send(It.IsAny<GetProductByIDQuery>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(valueFunction: () => null);
+                        .Throws(new ProductNotFoundException(productID));
 
             // Act
-            var result = (ActionResult)await _ProductsController.GetByID(ProductID.CreateUnique().value);
+            var result = (ActionResult)await _ProductsController.GetByID(productID.value);
 
             // Assert
-            var actionResult = Assert.IsType<NotFoundResult>(result);
+            var actionResult = Assert.IsType<NotFoundObjectResult>(result);
         }
     }
 }
