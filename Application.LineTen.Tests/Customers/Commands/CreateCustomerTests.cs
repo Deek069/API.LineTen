@@ -25,13 +25,12 @@ namespace Application.LineTen.Tests.Customers.Commands
         public async Task Handler_Should_CreateCustomerAndReturnCreatedCustomerDetails()
         {
             // Arrange
-            var command = new CreateCustomerCommand
-            {
-                FirstName = _customerTestData.Customer1.FirstName,
-                LastName = _customerTestData.Customer1.LastName,
-                Phone = _customerTestData.Customer1.Phone,
-                Email = _customerTestData.Customer1.Email
-            };
+            var command = new CreateCustomerCommand(
+                _customerTestData.Customer1.FirstName,
+                _customerTestData.Customer1.LastName,
+                _customerTestData.Customer1.Phone,
+                _customerTestData.Customer1.Email
+            );
 
             // Act
             var result = await _handler.Handle(command, default);

@@ -3,7 +3,5 @@ using MediatR;
 
 namespace Application.LineTen.Orders.Queries.GetAllOrders
 {
-    public class GetAllOrdersQuery : IRequest<IEnumerable<OrderSummaryDTO>>
-    {
-    }
+    public record GetAllOrdersQuery() : IRequest<IEnumerable<OrderSummaryDTO>>;
 }

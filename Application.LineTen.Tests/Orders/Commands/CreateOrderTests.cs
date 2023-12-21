@@ -45,11 +45,10 @@ namespace Application.LineTen.Tests.Orders.Commands
             _productsRepoMock.Setup(repo => repo.ProductExists(product.ID)).Returns(true);
 
             // Act
-            var command = new CreateOrderCommand()
-            {
-                CustomerID = customer.ID.value,
-                ProductID = product.ID.value
-            };
+            var command = new CreateOrderCommand(
+                customer.ID.value,
+                product.ID.value
+            );
             var result = await _handler.Handle(command, default);
 
             // Assert

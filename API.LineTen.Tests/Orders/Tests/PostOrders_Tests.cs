@@ -32,11 +32,10 @@ namespace API.LineTen.Tests.Orders.Tests
 
             var customer = _OrdersTestData.Order1.Customer;
             var product = _OrdersTestData.Order1.Product;
-            var command = new CreateOrderCommand()
-            {
-                CustomerID = customer.ID.value,
-                ProductID = product.ID.value,
-            };
+            var command = new CreateOrderCommand(
+                customer.ID.value,
+                product.ID.value
+            );
 
             // Act
             var result = (ActionResult)await _OrdersController.CreateOrder(command);

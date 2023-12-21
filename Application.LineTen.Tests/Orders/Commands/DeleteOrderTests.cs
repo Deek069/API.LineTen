@@ -25,10 +25,7 @@ namespace Application.LineTen.Tests.Orders.Commands
         public async Task Handler_Should_DeleteOrderAndReturnTrue_IfValidIDProvided()
         {
             // Arrange
-            var command = new DeleteOrderCommand()
-            {
-                ID = _ordersTestData.Order1.ID.value
-            };
+            var command = new DeleteOrderCommand(_ordersTestData.Order1.ID.value);
             _ordersRepoMock.Setup(repo => repo.GetById(_ordersTestData.Order1.ID)).Returns(_ordersTestData.Order1);
 
             // Act
@@ -43,10 +40,7 @@ namespace Application.LineTen.Tests.Orders.Commands
         public async Task Handler_Should_ReturnFalse_IfInvalidIDProvided()
         {
             // Arrange
-            var command = new DeleteOrderCommand()
-            {
-                ID = OrderID.CreateUnique().value
-            };
+            var command = new DeleteOrderCommand(OrderID.CreateUnique().value);
             _ordersRepoMock.Setup(repo => repo.GetById(It.IsAny<OrderID>())).Returns(valueFunction: () => null);
 
             // Act

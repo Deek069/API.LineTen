@@ -1,6 +1,7 @@
 ﻿using Application.LineTen.Customers.Commands.CreateCustomer;
 using Application.LineTen.Customers.Commands.DeleteCustomer;
 using Application.LineTen.Customers.Commands.UpdateCustomer;
+using Application.LineTen.Customers.DTOs;
 using Application.LineTen.Customers.Queries.GetAllCustomers;
 using Application.LineTen.Customers.Queries.GetCustomerByID;
 using Domain.LineTen.Customers;
@@ -23,7 +24,7 @@ namespace API.LineTen.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(CustomerDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> CreateCustomer(CreateCustomerCommand command)
@@ -33,7 +34,7 @@ namespace API.LineTen.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<CustomerDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetAll()
         {
@@ -43,12 +44,12 @@ namespace API.LineTen.Controllers
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(CustomerDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetByID(Guid id)
         {
-            var query = new GetCustomerByIDQuery() { ID = new CustomerID(id) };
+            var query = new GetCustomerByIDQuery(new CustomerID(id));
             var result = await _mediator.Send(query);
             if (result == null)
             {
@@ -57,12 +58,13 @@ namespace API.LineTen.Controllers
             return Ok(result);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> UpdateCustomer(UpdateCustomerCommand command)
+        public async Task<IActionResult> UpdateCustomer(Guid id, [FromBody] UpdateCustomerRequest request)
         {
+            var command = new UpdateCustomerCommand(id, request.FirstName, request.LastName, request.Phone, request.Email);
             var result = await _mediator.Send(command);
             if (!result) return NotFound();
             return Ok();
@@ -74,7 +76,7 @@ namespace API.LineTen.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> DeleteCustomer(Guid id)
         {
-            var command = new DeleteCustomerCommand() { ID = id };
+            var command = new DeleteCustomerCommand(id);
             var result = await _mediator.Send(command);
             if (!result) return NotFound();
             return Ok();

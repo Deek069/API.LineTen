@@ -30,7 +30,6 @@ namespace LineTen.IntegrationTests.Customers.Tests
         public async Task GetCustomer_Should_ReturnNotFound_WithInvalidID()
         {
             // Arrange
-            var methods = new CustomerMethods(TestClient);
             var customerID = CustomerID.CreateUnique().value;
 
             // Act

@@ -4,8 +4,5 @@ using MediatR;
 
 namespace Application.LineTen.Orders.Queries.GetOrderSummary
 {
-    public sealed class GetOrderSummaryQuery : IRequest<OrderSummaryDTO>
-    {
-        public Guid ID { get; set; }
-    }
+    public sealed record GetOrderSummaryQuery(Guid ID) : IRequest<OrderSummaryDTO>;
 }

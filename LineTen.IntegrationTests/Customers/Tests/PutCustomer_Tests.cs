@@ -17,19 +17,18 @@ namespace LineTen.IntegrationTests.Customers.Tests
             var newCustomer = await methods.CreateCustomer(testData.CreateCustomerCommand1);
             Assert.NotNull(newCustomer);
 
-            var updateCommand = new UpdateCustomerCommand()
-            {
-                ID = newCustomer.ID,
-                FirstName = "Jonathan",
-                LastName = "Bobcat",
-                Phone = "01293 48238389",
-                Email = "jonny.bobcat@hotmail.com"
-            };
-            var jsonContent = JsonSerializer.Serialize(updateCommand);
+            var customerID = newCustomer.ID;
+            var request = new UpdateCustomerRequest(
+                "Jonathan",
+                "Bobcat",
+                "01293 48238389",
+                "jonny.bobcat@hotmail.com"
+            );
+            var jsonContent = JsonSerializer.Serialize(request);
             var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
             // Act
-            var response = await TestClient.PutAsync("Customers", content);
+            var response = await TestClient.PutAsync($"Customers/{customerID}", content);
 
             // Assert
             Assert.Equal(expected: HttpStatusCode.OK, actual: response.StatusCode);
@@ -39,19 +38,18 @@ namespace LineTen.IntegrationTests.Customers.Tests
         public async Task PostCustomer_Should_ReturnNotFound_WithInvalidID()
         {
             // Arrange
-            var updateCommand = new UpdateCustomerCommand()
-            {
-                ID = CustomerID.CreateUnique().value,
-                FirstName = "Jonathan",
-                LastName = "Bobcat",
-                Phone = "01293 48238389",
-                Email = "jonny.bobcat@hotmail.com"
-            };
-            var jsonContent = JsonSerializer.Serialize(updateCommand);
+            var customerID = CustomerID.CreateUnique().value;
+            var request = new UpdateCustomerRequest(
+                "Jonathan",
+                "Bobcat",
+                "01293 48238389",
+                "jonny.bobcat@hotmail.com"
+            );
+            var jsonContent = JsonSerializer.Serialize(request);
             var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
             // Act
-            var response = await TestClient.PutAsync("Customers", content);
+            var response = await TestClient.PutAsync($"Customers/{customerID}", content);
 
             // Assert
             Assert.Equal(expected: HttpStatusCode.NotFound, actual: response.StatusCode);

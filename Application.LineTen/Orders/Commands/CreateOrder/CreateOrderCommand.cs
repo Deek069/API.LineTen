@@ -5,9 +5,5 @@ using MediatR;
 
 namespace Application.LineTen.Orders.Commands.CreateOrder
 {
-    public sealed class CreateOrderCommand : IRequest<OrderDTO>
-    {
-        public Guid CustomerID { get; set; }
-        public Guid ProductID { get; set; }
-    }
+    public sealed record CreateOrderCommand(Guid CustomerID, Guid ProductID) : IRequest<OrderDTO>;
 }

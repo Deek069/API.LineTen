@@ -31,16 +31,15 @@ namespace API.LineTen.Tests.Products.Tests
             // Arrange
             _mockMediator.Setup(x => x.Send(It.IsAny<UpdateProductCommand>(), It.IsAny<CancellationToken>()))
                         .ReturnsAsync(true);
-            var command = new UpdateProductCommand()
-            {
-                ID = _ProductsTestData.Product1.ID.value,
-                Name = _ProductsTestData.Product1.Name,
-                Description = _ProductsTestData.Product1.Description,
-                SKU = _ProductsTestData.Product1.SKU,
-            };
+            var productID = _ProductsTestData.Product1.ID.value;
+            var request = new UpdateProductRequest(
+                _ProductsTestData.Product1.Name,
+                _ProductsTestData.Product1.Description,
+                _ProductsTestData.Product1.SKU
+            );
 
             // Act
-            var result = (ActionResult)await _ProductsController.UpdateProduct(command);
+            var result = (ActionResult)await _ProductsController.UpdateProduct(productID, request);
 
             // Assert
             var actionResult = Assert.IsType<OkResult>(result);
@@ -52,16 +51,15 @@ namespace API.LineTen.Tests.Products.Tests
             // Arrange
             _mockMediator.Setup(x => x.Send(It.IsAny<UpdateProductCommand>(), It.IsAny<CancellationToken>()))
                         .ReturnsAsync(false);
-            var command = new UpdateProductCommand()
-            {
-                ID = ProductID.CreateUnique().value,
-                Name = "Triumph Street Triple",
-                Description = "The Triumph Street Triple is a naked or streetfighter motorcycle made by Triumph Motorcycles, first released towards the end of 2007. The bike is closely modelled on the Speed Triple 1050 but uses a re-tuned inline three cylinder 675 cc engine from the Daytona 675 sport bike, which was released in 2006.",
-                SKU = "TRI-675R"
-            };
+            var productID = ProductID.CreateUnique().value;
+            var request = new UpdateProductRequest(
+                "Triumph Street Triple",
+                "The Triumph Street Triple is a naked or streetfighter motorcycle made by Triumph Motorcycles, first released towards the end of 2007. The bike is closely modelled on the Speed Triple 1050 but uses a re-tuned inline three cylinder 675 cc engine from the Daytona 675 sport bike, which was released in 2006.",
+                "TRI-675R"
+            );
 
             // Act
-            var result = (ActionResult)await _ProductsController.UpdateProduct(command);
+            var result = (ActionResult)await _ProductsController.UpdateProduct(productID, request);
 
             // Assert
             var actionResult = Assert.IsType<NotFoundResult>(result);

@@ -25,11 +25,10 @@ namespace Application.LineTen.Tests.Orders.Commands
         public async Task Handler_Should_UpdateOrderAndReturnTrue_IfValidIDProvided()
         {
             // Arrange
-            var command = new UpdateOrderCommand
-            {
-                ID = _ordersTestData.Order1.ID.value,
-                Status = OrderStatus.Pending
-            };
+            var command = new UpdateOrderCommand(
+                _ordersTestData.Order1.ID.value,
+                OrderStatus.Pending
+            );
 
             _ordersRepoMock.Setup(repo => repo.GetById(_ordersTestData.Order1.ID)).Returns(_ordersTestData.Order1);
 
@@ -46,11 +45,10 @@ namespace Application.LineTen.Tests.Orders.Commands
         {
             // Arrange
             var orderID = OrderID.CreateUnique();
-            var command = new UpdateOrderCommand
-            {
-                ID = orderID.value,
-                Status = OrderStatus.Pending
-            };
+            var command = new UpdateOrderCommand(
+                orderID.value,
+                OrderStatus.Pending
+            );
             _ordersRepoMock.Setup(repo => repo.GetById(It.IsAny<OrderID>())).Returns(valueFunction: () => null);
 
             // Act

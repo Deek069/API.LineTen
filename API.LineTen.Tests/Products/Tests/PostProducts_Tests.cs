@@ -29,12 +29,11 @@ namespace API.LineTen.Tests.Products.Tests
             // Arrange
             _mockMediator.Setup(x => x.Send(It.IsAny<CreateProductCommand>(), It.IsAny<CancellationToken>()))
                         .ReturnsAsync(ProductDTO.FromProduct(_ProductsTestData.Product1));
-            var command = new CreateProductCommand()
-            {
-                Name = _ProductsTestData.Product1.Name,
-                Description = _ProductsTestData.Product1.Description,
-                SKU = _ProductsTestData.Product1.SKU,
-            };
+            var command = new CreateProductCommand(
+                _ProductsTestData.Product1.Name,
+                _ProductsTestData.Product1.Description,
+                _ProductsTestData.Product1.SKU
+            );
 
             // Act
             var result = (ActionResult)await _ProductsController.CreateProduct(command);

@@ -25,14 +25,13 @@ namespace Application.LineTen.Tests.Customers.Commands
         public async Task Handler_Should_UpdateCustomerAndReturnTrue_IfValidIDProvided()
         {
             // Arrange
-            var command = new UpdateCustomerCommand
-            {
-                ID = _customerTestData.Customer1.ID.value,
-                FirstName = _customerTestData.Customer1.FirstName,
-                LastName = _customerTestData.Customer1.LastName,
-                Phone = _customerTestData.Customer1.Phone,
-                Email = _customerTestData.Customer1.Email
-            };
+            var command = new UpdateCustomerCommand(
+                _customerTestData.Customer1.ID.value,
+                _customerTestData.Customer1.FirstName,
+                _customerTestData.Customer1.LastName,
+                _customerTestData.Customer1.Phone,
+                _customerTestData.Customer1.Email
+            );
             _repositoryMock.Setup(repo => repo.GetById(_customerTestData.Customer1.ID)).Returns(_customerTestData.Customer1);
 
             // Act
@@ -48,14 +47,13 @@ namespace Application.LineTen.Tests.Customers.Commands
         public async Task Handler_Should_ReturnFalse_IfInvalidIDProvided()
         {
             // Arrange
-            var command = new UpdateCustomerCommand
-            {
-                ID = _customerTestData.Customer1.ID.value,
-                FirstName = _customerTestData.Customer1.FirstName,
-                LastName = _customerTestData.Customer1.LastName,
-                Phone = _customerTestData.Customer1.Phone,
-                Email = _customerTestData.Customer1.Email
-            };
+            var command = new UpdateCustomerCommand(
+                _customerTestData.Customer1.ID.value,
+                _customerTestData.Customer1.FirstName,
+                _customerTestData.Customer1.LastName,
+                _customerTestData.Customer1.Phone,
+                _customerTestData.Customer1.Email
+            );
             _repositoryMock.Setup(repo => repo.GetById(It.IsAny<CustomerID>())).Returns(valueFunction: () => null);
 
             // Act

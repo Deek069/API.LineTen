@@ -17,16 +17,13 @@ namespace LineTen.IntegrationTests.Orders.Tests
             
             var methods = new OrderMethods(TestClient);
             var newOrder = await methods.CreateOrder(testData.CreateOrderCommand1);
-            var command = new UpdateOrderCommand()
-            {
-                ID = newOrder.ID,
-                Status = OrderStatus.Complete
-            };
+            var orderID = newOrder.ID;
+            var request = new UpdateOrderRequest(OrderStatus.Complete);
 
             // Act
-            var jsonContent = JsonSerializer.Serialize(command);
+            var jsonContent = JsonSerializer.Serialize(request);
             var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-            var response = await TestClient.PutAsync("Orders", content);
+            var response = await TestClient.PutAsync($"Orders/{orderID}", content);
 
             // Assert
             Assert.Equal(expected: HttpStatusCode.OK, actual: response.StatusCode);
@@ -36,16 +33,13 @@ namespace LineTen.IntegrationTests.Orders.Tests
         public async Task PostOrder_Should_ReturnNotFound_WithInvalidID()
         {
             // Arrange
-            var command = new UpdateOrderCommand()
-            {
-                ID = OrderID.CreateUnique().value,
-                Status = OrderStatus.Complete
-            };
+            var orderID = OrderID.CreateUnique().value;
+            var request = new UpdateOrderRequest(OrderStatus.Complete);
 
             // Act
-            var jsonContent = JsonSerializer.Serialize(command);
+            var jsonContent = JsonSerializer.Serialize(request);
             var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-            var response = await TestClient.PutAsync("Orders", content);
+            var response = await TestClient.PutAsync($"Orders/{orderID}", content);
 
             // Assert
             Assert.Equal(expected: HttpStatusCode.NotFound, actual: response.StatusCode);

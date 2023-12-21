@@ -4,8 +4,5 @@ using MediatR;
 
 namespace Application.LineTen.Products.Queries.GetProductByID
 {
-    public sealed class GetProductByIDQuery: IRequest<ProductDTO>
-    {
-        public ProductID ID { get; set; }
-    }
+    public sealed record GetProductByIDQuery(ProductID ID) : IRequest<ProductDTO>;
 }

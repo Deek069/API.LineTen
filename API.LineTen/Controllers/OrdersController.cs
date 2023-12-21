@@ -1,10 +1,9 @@
 ﻿using Application.LineTen.Orders.Commands.CreateOrder;
 using Application.LineTen.Orders.Commands.DeleteOrder;
 using Application.LineTen.Orders.Commands.UpdateOrder;
+using Application.LineTen.Orders.DTOs;
 using Application.LineTen.Orders.Queries.GetAllOrders;
-using Application.LineTen.Orders.Queries.GetOrderByID;
 using Application.LineTen.Orders.Queries.GetOrderSummary;
-using Domain.LineTen.Orders;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,7 +23,7 @@ namespace API.LineTen.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(OrderDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> CreateOrder(CreateOrderCommand command)
@@ -34,7 +33,7 @@ namespace API.LineTen.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<OrderSummaryDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetAll()
         {
@@ -44,12 +43,12 @@ namespace API.LineTen.Controllers
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(OrderSummaryDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetOrderSummary(Guid id)
         {
-            var query = new GetOrderSummaryQuery () { ID = id };
+            var query = new GetOrderSummaryQuery (id);
             var result = await _mediator.Send(query);
             if (result == null)
             {
@@ -58,12 +57,13 @@ namespace API.LineTen.Controllers
             return Ok(result);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> UpdateOrder(UpdateOrderCommand command)
+        public async Task<IActionResult> UpdateOrder(Guid id, [FromBody] UpdateOrderRequest request)
         {
+            var command = new UpdateOrderCommand(id, request.Status);
             var result = await _mediator.Send(command);
             if (!result) return NotFound();
             return Ok();
@@ -75,7 +75,7 @@ namespace API.LineTen.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> DeleteOrder(Guid id)
         {
-            var command = new DeleteOrderCommand() { ID = id };
+            var command = new DeleteOrderCommand(id);
             var result = await _mediator.Send(command);
             if (!result) return NotFound();
             return Ok();

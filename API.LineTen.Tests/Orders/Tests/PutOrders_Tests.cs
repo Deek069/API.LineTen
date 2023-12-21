@@ -31,14 +31,11 @@ namespace API.LineTen.Tests.Orders.Tests
             // Arrange
             _mockMediator.Setup(x => x.Send(It.IsAny<UpdateOrderCommand>(), It.IsAny<CancellationToken>()))
                         .ReturnsAsync(true);
-            var command = new UpdateOrderCommand()
-            {
-                ID = _OrdersTestData.Order1.ID.value,
-                Status = OrderStatus.Complete
-            };
+            var orderID = _OrdersTestData.Order1.ID.value;
+            var request= new UpdateOrderRequest(OrderStatus.Complete);
 
             // Act
-            var result = (ActionResult)await _OrdersController.UpdateOrder(command);
+            var result = (ActionResult)await _OrdersController.UpdateOrder(orderID, request);
 
             // Assert
             var actionResult = Assert.IsType<OkResult>(result);
@@ -50,14 +47,11 @@ namespace API.LineTen.Tests.Orders.Tests
             // Arrange
             _mockMediator.Setup(x => x.Send(It.IsAny<UpdateOrderCommand>(), It.IsAny<CancellationToken>()))
                         .ReturnsAsync(false);
-            var command = new UpdateOrderCommand()
-            {
-                ID = OrderID.CreateUnique().value,
-                Status = OrderStatus.Complete
-            };
+            var orderID = OrderID.CreateUnique().value;
+            var request = new UpdateOrderRequest(OrderStatus.Complete);
 
             // Act
-            var result = (ActionResult)await _OrdersController.UpdateOrder(command);
+            var result = (ActionResult)await _OrdersController.UpdateOrder(orderID, request);
 
             // Assert
             var actionResult = Assert.IsType<NotFoundResult>(result);

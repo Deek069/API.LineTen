@@ -25,7 +25,6 @@ namespace LineTen.IntegrationTests.Customers.Tests
         public async Task Delete_Should_ReturnNotFound_IfAnInvalidIDIsProvided()
         {
             // Arrange
-            var methods = new CustomerMethods(TestClient);
             var customerID = CustomerID.CreateUnique().value;
 
             // Act

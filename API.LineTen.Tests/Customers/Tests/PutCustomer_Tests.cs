@@ -31,17 +31,16 @@ namespace API.LineTen.Tests.Customers.Tests
             // Arrange
             _mockMediator.Setup(x => x.Send(It.IsAny<UpdateCustomerCommand>(), It.IsAny<CancellationToken>()))
                         .ReturnsAsync(true);
-            var command = new UpdateCustomerCommand()
-            {
-                ID = _customerTestData.Customer1.ID.value,
-                FirstName = _customerTestData.Customer1.FirstName,
-                LastName = _customerTestData.Customer1.LastName,
-                Phone = _customerTestData.Customer1.Phone,
-                Email = _customerTestData.Customer1.Email
-            };
+            var customerID = _customerTestData.Customer1.ID.value;
+            var request = new UpdateCustomerRequest(
+                _customerTestData.Customer1.FirstName,
+                _customerTestData.Customer1.LastName,
+                _customerTestData.Customer1.Phone,
+                _customerTestData.Customer1.Email
+            );
 
             // Act
-            var result = (ActionResult)await _customersController.UpdateCustomer(command);
+            var result = (ActionResult)await _customersController.UpdateCustomer(customerID, request);
 
             // Assert
             var actionResult = Assert.IsType<OkResult>(result);
@@ -53,17 +52,16 @@ namespace API.LineTen.Tests.Customers.Tests
             // Arrange
             _mockMediator.Setup(x => x.Send(It.IsAny<UpdateCustomerCommand>(), It.IsAny<CancellationToken>()))
                         .ReturnsAsync(false);
-            var command = new UpdateCustomerCommand()
-            {
-                ID = CustomerID.CreateUnique().value,
-                FirstName = "Marge",
-                LastName = "Simpson",
-                Phone = "01 02481 383848",
-                Email = "marge.simpson@aol.com"
-            };
+            var customerID = CustomerID.CreateUnique().value;
+            var request = new UpdateCustomerRequest(
+                "Marge",
+                "Simpson",
+                "01 02481 383848",
+                "marge.simpson@aol.com"
+            );
 
             // Act
-            var result = (ActionResult)await _customersController.UpdateCustomer(command);
+            var result = (ActionResult)await _customersController.UpdateCustomer(customerID, request);
 
             // Assert
             var actionResult = Assert.IsType<NotFoundResult>(result);

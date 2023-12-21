@@ -24,7 +24,7 @@ namespace Application.LineTen.Tests.Customers.Queries
             var handler = new GetCustomerByIDQueryHandler(_customersRepoMock.Object);
 
             var customerId = CustomerID.CreateUnique();
-            var query = new GetCustomerByIDQuery { ID = customerId };
+            var query = new GetCustomerByIDQuery(customerId);
 
             _customersRepoMock.Setup(repo => repo.GetById(customerId)).Returns(_customerTestData.Customer1);
 
@@ -43,7 +43,7 @@ namespace Application.LineTen.Tests.Customers.Queries
             var handler = new GetCustomerByIDQueryHandler(_customersRepoMock.Object);
 
             var customerId = CustomerID.CreateUnique();
-            var query = new GetCustomerByIDQuery { ID = customerId };
+            var query = new GetCustomerByIDQuery(customerId);
 
             _customersRepoMock.Setup(repo => repo.GetById(It.IsAny<CustomerID>())).Returns(valueFunction: () => null);
 

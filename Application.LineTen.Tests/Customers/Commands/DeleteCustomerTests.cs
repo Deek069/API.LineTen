@@ -25,10 +25,7 @@ namespace Application.LineTen.Tests.Customers.Commands
         public async Task Handler_Should_DeleteCustomerAndReturnTrue_IfValidIDProvided()
         {
             // Arrange
-            var command = new DeleteCustomerCommand
-            {
-                ID = CustomerID.CreateUnique().value
-            };
+            var command = new DeleteCustomerCommand(CustomerID.CreateUnique().value);
             _repositoryMock.Setup(repo => repo.GetById(new CustomerID(command.ID))).Returns(_customerTestData.Customer1);
 
             // Act
@@ -44,10 +41,7 @@ namespace Application.LineTen.Tests.Customers.Commands
         public async Task Handler_Should_ReturnFalse_IfInvalidIDProvided()
         {
             // Arrange
-            var command = new DeleteCustomerCommand
-            {
-                ID = CustomerID.CreateUnique().value
-            };
+            var command = new DeleteCustomerCommand(CustomerID.CreateUnique().value);
             _repositoryMock.Setup(repo => repo.GetById(It.IsAny<CustomerID>())).Returns(valueFunction: () => null);
 
             // Act

@@ -25,12 +25,11 @@ namespace Application.LineTen.Tests.Products.Commands
         public async Task Handler_Should_CreateProductAndReturnCreatedOrderDetails()
         {
             // Arrange
-            var command = new CreateProductCommand
-            {
-                Name = _productsTestData.Product1.Name,
-                Description = _productsTestData.Product1.Description,
-                SKU = _productsTestData.Product1.SKU
-            };
+            var command = new CreateProductCommand(
+                _productsTestData.Product1.Name,
+                _productsTestData.Product1.Description,
+                _productsTestData.Product1.SKU
+            );
 
             // Act
             var result = await _handler.Handle(command, default);

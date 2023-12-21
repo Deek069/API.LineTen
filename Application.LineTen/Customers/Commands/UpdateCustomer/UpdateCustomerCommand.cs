@@ -1,14 +1,6 @@
-﻿using Domain.LineTen.Customers;
-using MediatR;
+﻿using MediatR;
 
 namespace Application.LineTen.Customers.Commands.UpdateCustomer
 {
-    public sealed class UpdateCustomerCommand : IRequest<bool>
-    {
-        public Guid ID { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Phone { get; set; }
-        public string Email { get; set; }
-    }
+    public sealed record UpdateCustomerCommand(Guid ID, string FirstName, string LastName, string Phone, string Email) : IRequest<bool>;
 }

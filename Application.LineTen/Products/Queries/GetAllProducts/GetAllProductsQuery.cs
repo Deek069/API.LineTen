@@ -3,7 +3,5 @@ using MediatR;
 
 namespace Application.LineTen.Products.Queries.GetAllProducts
 {
-    public class GetAllProductsQuery: IRequest<IEnumerable<ProductDTO>>
-    {
-    }
+    public sealed record GetAllProductsQuery(): IRequest<IEnumerable<ProductDTO>>;
 }

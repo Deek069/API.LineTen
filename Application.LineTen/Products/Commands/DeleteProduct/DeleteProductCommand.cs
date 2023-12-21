@@ -3,8 +3,5 @@ using MediatR;
 
 namespace Application.LineTen.Products.Commands.DeleteProduct
 {
-    public sealed class DeleteProductCommand : IRequest<bool>
-    {
-        public Guid ID { get; set; }
-    }
+    public sealed record DeleteProductCommand(Guid ID) : IRequest<bool>;
 }

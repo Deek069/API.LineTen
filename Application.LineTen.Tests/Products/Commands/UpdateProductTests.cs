@@ -29,13 +29,12 @@ namespace Application.LineTen.Tests.Products.Commands
             _productsTestData.Product1.SKU = "KHI-201304";
 
             // Act
-            var command = new UpdateProductCommand
-            {
-                ID = _productsTestData.Product1.ID.value,
-                Name = _productsTestData.Product1.Name,
-                Description = _productsTestData.Product1.Description,
-                SKU = _productsTestData.Product1.SKU
-            };
+            var command = new UpdateProductCommand(
+                _productsTestData.Product1.ID.value,
+                _productsTestData.Product1.Name,
+                _productsTestData.Product1.Description,
+                _productsTestData.Product1.SKU
+            );
             await _handler.Handle(command, default);
 
             // Assert
@@ -50,13 +49,12 @@ namespace Application.LineTen.Tests.Products.Commands
             _productsRepoMock.Setup(repo => repo.GetById(It.IsAny<ProductID>())).Returns(valueFunction: () => null);
 
             // Act
-            var command = new UpdateProductCommand
-            {
-                ID = ProductID.CreateUnique().value,
-                Name = _productsTestData.Product1.Name,
-                Description = _productsTestData.Product1.Description,
-                SKU = _productsTestData.Product1.SKU
-            };
+            var command = new UpdateProductCommand(
+                ProductID.CreateUnique().value,
+                _productsTestData.Product1.Name,
+                _productsTestData.Product1.Description,
+                _productsTestData.Product1.SKU
+            );
             await _handler.Handle(command, default);
 
             // Assert

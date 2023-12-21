@@ -11,21 +11,19 @@ namespace LineTen.IntegrationTests.Customers
 
         public CustomerTestData()
         {
-            CreateCustomerCommand1= new CreateCustomerCommand()
-            {
-                FirstName = "Joe",
-                LastName = "Bloggs",
-                Phone = "07723 2239356",
-                Email = "joe.bloggs@gamil.com"
-            };
+            CreateCustomerCommand1= new CreateCustomerCommand(
+                "Joe",
+                "Bloggs",
+                "07723 2239356",
+                "joe.bloggs@gamil.com"
+            );
 
-            CreateCustomerCommand2 = new CreateCustomerCommand()
-            {
-                FirstName = "Alice",
-                LastName = "Smith",
-                Phone = "09483 743738",
-                Email = "alice.smith@outlook.com"
-            };
+            CreateCustomerCommand2 = new CreateCustomerCommand(
+                "Alice",
+                "Smith",
+                "09483 743738",
+                "alice.smith@outlook.com"
+            );
         }
     }
 }

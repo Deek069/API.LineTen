@@ -31,10 +31,10 @@ namespace LineTen.IntegrationTests.Orders
             var product1 = await productMethods.CreateProduct(ProductTestData.CreateProductCommand1);
             var product2 = await productMethods.CreateProduct(ProductTestData.CreateProductCommand2);
 
-            CreateOrderCommand1 = new CreateOrderCommand { CustomerID = customer1.ID, ProductID = product1.ID };
-            CreateOrderCommand2 = new CreateOrderCommand { CustomerID = customer1.ID, ProductID = product2.ID };
-            CreateOrderCommand3 = new CreateOrderCommand { CustomerID = customer2.ID, ProductID = product1.ID };
-            CreateOrderCommand4 = new CreateOrderCommand { CustomerID = customer2.ID, ProductID = product2.ID };
+            CreateOrderCommand1 = new CreateOrderCommand(customer1.ID, product1.ID);
+            CreateOrderCommand2 = new CreateOrderCommand(customer1.ID, product2.ID);
+            CreateOrderCommand3 = new CreateOrderCommand(customer2.ID, product1.ID);
+            CreateOrderCommand4 = new CreateOrderCommand(customer2.ID, product2.ID);
         }
     }
 }
