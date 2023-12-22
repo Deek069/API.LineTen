@@ -1,8 +1,8 @@
 ﻿using System.Net;
-using Domain.LineTen.Customers;
 using Application.LineTen.Customers.Commands.UpdateCustomer;
 using System.Text;
 using System.Text.Json;
+using Domain.LineTen.ValueObjects.Customers;
 
 namespace LineTen.IntegrationTests.Customers.Tests
 {
@@ -53,6 +53,27 @@ namespace LineTen.IntegrationTests.Customers.Tests
 
             // Assert
             Assert.Equal(expected: HttpStatusCode.NotFound, actual: response.StatusCode);
+        }
+
+        [Fact]
+        public async Task PostCustomer_Should_ReturnBadRequest_WhenInvalidDataIsProvided()
+        {
+            // Arrange
+            var testData = new CustomerTestData();
+            var methods = new CustomerMethods(TestClient);
+            var newCustomer = await methods.CreateCustomer(testData.CreateCustomerCommand1);
+            Assert.NotNull(newCustomer);
+
+            var customerID = newCustomer.ID;
+            var request = new UpdateCustomerRequest("", "", "", "");
+            var jsonContent = JsonSerializer.Serialize(request);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            // Act
+            var response = await TestClient.PutAsync($"Customers/{customerID}", content);
+
+            // Assert
+            Assert.Equal(expected: HttpStatusCode.BadRequest, actual: response.StatusCode);
         }
     }
 }

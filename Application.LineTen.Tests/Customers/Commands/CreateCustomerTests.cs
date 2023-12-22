@@ -1,8 +1,9 @@
 ﻿using Moq;
-using Domain.LineTen.Customers;
 using Application.LineTen.Customers.Commands.CreateCustomer;
 using Application.LineTen.Customers.Interfaces;
 using Application.LineTen.Common.Interfaces;
+using Domain.LineTen.Entities;
+using Application.LineTen.Customers.Exceptions;
 
 namespace Application.LineTen.Tests.Customers.Commands
 {
@@ -43,6 +44,33 @@ namespace Application.LineTen.Tests.Customers.Commands
             Assert.Equal(expected: command.LastName, actual: result.LastName);
             Assert.Equal(expected: command.Phone, actual: result.Phone);
             Assert.Equal(expected: command.Email, actual: result.Email);
+        }
+
+        [Fact]
+        public async Task Handler_Should_ThrowException_WithInvalidData()
+        {
+            // Act
+            try
+            {
+                // Arrange
+                var command = new CreateCustomerCommand("", "", "", "");
+                    
+                // Act
+                var result = await _handler.Handle(command, default);
+
+                // Assert
+                Assert.Fail("CustomerValidationException was not thrown.");
+
+            }
+            catch (CustomerValidationException cx)
+            {
+                _repositoryMock.Verify(repo => repo.Create(It.IsAny<Customer>()), Times.Never);
+                _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail($"An exception occurred: {ex.Message}");
+            }
         }
     }
 }

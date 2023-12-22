@@ -1,5 +1,4 @@
-﻿using Domain.LineTen.Products;
-using MediatR;
+﻿using MediatR;
 
 namespace Application.LineTen.Products.Commands.DeleteProduct
 {

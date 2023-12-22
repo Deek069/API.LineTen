@@ -1,6 +1,6 @@
-﻿using Domain.LineTen.Orders;
+﻿using Domain.LineTen.ValueObjects.Products;
 
-namespace Domain.LineTen.Products
+namespace Domain.LineTen.Entities
 {
     public sealed class Product
     {

@@ -1,5 +1,5 @@
 ﻿using Application.LineTen.Products.DTOs;
-using Domain.LineTen.Products;
+using Domain.LineTen.ValueObjects.Products;
 using System.Net;
 using System.Net.Http.Json;
 

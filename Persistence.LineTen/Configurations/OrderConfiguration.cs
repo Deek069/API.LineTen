@@ -1,6 +1,7 @@
-﻿using Domain.LineTen.Orders;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Domain.LineTen.Entities;
+using Domain.LineTen.ValueObjects.Orders;
 
 namespace Persistence.LineTen.Configurations
 {

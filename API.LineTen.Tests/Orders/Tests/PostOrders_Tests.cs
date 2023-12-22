@@ -5,6 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using MediatR;
+using Application.LineTen.Customers.Exceptions;
+using Domain.LineTen.ValueObjects.Customers;
+using Domain.LineTen.ValueObjects.Products;
+using Application.LineTen.Products.Exceptions;
 
 namespace API.LineTen.Tests.Orders.Tests
 {
@@ -47,6 +51,48 @@ namespace API.LineTen.Tests.Orders.Tests
             Assert.NotEqual(expected: Guid.Empty, actual: Order.ID);
             Assert.Equal(expected: customer.ID.value, actual: Order.CustomerID);
             Assert.Equal(expected: product.ID.value, actual: Order.ProductID);
+        }
+
+        [Fact]
+        public async Task PostOrder_Should_ReturnNotFound_WhenInvalidCustomerIDProvided()
+        {
+            // Arrange
+            var customerID = CustomerID.CreateUnique();
+            _mockMediator.Setup(x => x.Send(It.IsAny<CreateOrderCommand>(), It.IsAny<CancellationToken>()))
+                        .Throws(new CustomerNotFoundException(customerID));
+
+            var product = _OrdersTestData.Order1.Product;
+            var command = new CreateOrderCommand(
+                customerID.value,
+                product.ID.value
+            );
+
+            // Act
+            var result = (ActionResult)await _OrdersController.CreateOrder(command);
+
+            // Assert
+            var actionResult = Assert.IsType<NotFoundObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task PostOrder_Should_ReturnNotFound_WhenInvalidProductIDProvided()
+        {
+            // Arrange
+            var productID = ProductID.CreateUnique();
+            _mockMediator.Setup(x => x.Send(It.IsAny<CreateOrderCommand>(), It.IsAny<CancellationToken>()))
+                        .Throws(new ProductNotFoundException(productID));
+
+            var customer = _OrdersTestData.Order1.Customer;
+            var command = new CreateOrderCommand(
+                customer.ID.value,
+                productID.value
+            );
+
+            // Act
+            var result = (ActionResult)await _OrdersController.CreateOrder(command);
+
+            // Assert
+            var actionResult = Assert.IsType<NotFoundObjectResult>(result);
         }
     }
 }

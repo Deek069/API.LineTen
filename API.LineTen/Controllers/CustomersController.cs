@@ -5,8 +5,7 @@ using Application.LineTen.Customers.DTOs;
 using Application.LineTen.Customers.Exceptions;
 using Application.LineTen.Customers.Queries.GetAllCustomers;
 using Application.LineTen.Customers.Queries.GetCustomerByID;
-using Application.LineTen.Products.Exceptions;
-using Domain.LineTen.Customers;
+using Domain.LineTen.ValueObjects.Customers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,6 +34,10 @@ namespace API.LineTen.Controllers
             {
                 var result = await _mediator.Send(command);
                 return CreatedAtAction(nameof(CreateCustomer), new { id = result.ID }, result);
+            }
+            catch (CustomerValidationException cx)
+            {
+                return BadRequest(cx.Message);
             }
             catch (Exception ex)
             {

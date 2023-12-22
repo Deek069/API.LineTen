@@ -1,5 +1,5 @@
 ﻿using Application.LineTen.Customers.DTOs;
-using Domain.LineTen.Orders;
+using Domain.LineTen.Entities;
 using System.Numerics;
 
 namespace Application.LineTen.Orders.DTOs

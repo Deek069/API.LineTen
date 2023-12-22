@@ -1,4 +1,4 @@
-﻿using Domain.LineTen.Orders;
+﻿using Domain.LineTen.ValueObjects.Orders;
 
 namespace Domain.LineTen.Tests.Orders
 {

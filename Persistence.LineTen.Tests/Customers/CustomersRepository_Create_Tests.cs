@@ -1,6 +1,4 @@
-﻿using Application.LineTen.Common.Interfaces;
-using Domain.LineTen.Customers;
-using Persistence.LineTen.Repositories;
+﻿using Persistence.LineTen.Repositories;
 
 namespace Persistence.LineTen.Tests.Customers
 {

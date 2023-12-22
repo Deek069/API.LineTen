@@ -1,9 +1,10 @@
 ﻿using Moq;
-using Domain.LineTen.Orders;
 using Application.LineTen.Orders.Commands.DeleteOrder;
 using Application.LineTen.Orders.Interfaces;
 using Application.LineTen.Common.Interfaces;
 using Application.LineTen.Orders.Exceptions;
+using Domain.LineTen.Entities;
+using Domain.LineTen.ValueObjects.Orders;
 
 namespace Application.LineTen.Tests.Orders.Commands
 {

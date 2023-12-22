@@ -1,4 +1,4 @@
-﻿using Domain.LineTen.Products;
+﻿using Domain.LineTen.ValueObjects.Products;
 
 namespace Application.LineTen.Products.Exceptions
 {

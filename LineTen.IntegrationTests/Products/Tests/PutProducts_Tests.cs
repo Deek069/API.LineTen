@@ -1,9 +1,9 @@
 ﻿using System.Net;
-using Domain.LineTen.Products;
 using Application.LineTen.Products.Commands.UpdateProduct;
 using System.Text;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore.Query.Internal;
+using Domain.LineTen.ValueObjects.Products;
 
 namespace LineTen.IntegrationTests.Products.Tests
 {
@@ -52,6 +52,31 @@ namespace LineTen.IntegrationTests.Products.Tests
 
             // Assert
             Assert.Equal(expected: HttpStatusCode.NotFound, actual: response.StatusCode);
+        }
+
+        [Fact]
+        public async Task PostProduct_Should_ReturnBadRequest_WhenInvalidDataProvided()
+        {
+            // Arrange
+            var testData = new ProductTestData();
+            var methods = new ProductMethods(TestClient);
+            var newProduct = await methods.CreateProduct(testData.CreateProductCommand1);
+            Assert.NotNull(newProduct);
+
+            var productID = newProduct.ID;
+            var request = new UpdateProductRequest(
+                "",
+                "",
+                ""
+            );
+            var jsonContent = JsonSerializer.Serialize(request);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            // Act
+            var response = await TestClient.PutAsync($"Products/{productID}", content);
+
+            // Assert
+            Assert.Equal(expected: HttpStatusCode.BadRequest, actual: response.StatusCode);
         }
     }
 }

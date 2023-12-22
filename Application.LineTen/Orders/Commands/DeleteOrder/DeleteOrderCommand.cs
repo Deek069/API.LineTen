@@ -1,5 +1,4 @@
-﻿using Domain.LineTen.Orders;
-using MediatR;
+﻿using MediatR;
 
 namespace Application.LineTen.Orders.Commands.DeleteOrder
 {

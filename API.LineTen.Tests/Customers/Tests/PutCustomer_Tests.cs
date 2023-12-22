@@ -5,8 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using MediatR;
-using Domain.LineTen.Customers;
 using Application.LineTen.Customers.Exceptions;
+using Domain.LineTen.ValueObjects.Customers;
+using Application.LineTen.Customers.Commands.CreateCustomer;
 
 namespace API.LineTen.Tests.Customers.Tests
 {
@@ -64,6 +65,22 @@ namespace API.LineTen.Tests.Customers.Tests
 
             // Assert
             var actionResult = Assert.IsType<NotFoundObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task PutCustomer_Should_ReturnBadRequest_WhenInvalidDataProvided()
+        {
+            // Arrange
+            var customerID = _customerTestData.Customer1.ID.value;
+            _mockMediator.Setup(x => x.Send(It.IsAny<UpdateCustomerCommand>(), It.IsAny<CancellationToken>()))
+                        .Throws(new CustomerValidationException("Invalid Data"));
+            var request = new UpdateCustomerRequest("", "", "", "");
+
+            // Act
+            var result = (ActionResult)await _customersController.UpdateCustomer(customerID, request);
+
+            // Assert
+            var actionResult = Assert.IsType<BadRequestObjectResult>(result);
         }
     }
 }

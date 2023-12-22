@@ -1,5 +1,4 @@
 ﻿using Application.LineTen.Orders.Commands.CreateOrder;
-using Domain.LineTen.Orders;
 using LineTen.IntegrationTests.Customers;
 using LineTen.IntegrationTests.Products;
 

@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using MediatR;
-using Domain.LineTen.Orders;
 using Application.LineTen.Orders.Exceptions;
+using Domain.LineTen.ValueObjects.Orders;
 
 namespace API.LineTen.Tests.Orders.Tests
 {
@@ -54,6 +54,22 @@ namespace API.LineTen.Tests.Orders.Tests
 
             // Assert
             var actionResult = Assert.IsType<NotFoundObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task PutOrder_Should_ReturnBadRequest_WhenInvalidDataProvided()
+        {
+            // Arrange
+            _mockMediator.Setup(x => x.Send(It.IsAny<UpdateOrderCommand>(), It.IsAny<CancellationToken>()))
+                        .Throws(new OrderValidationException("Bad Data"));
+            var orderID = _OrdersTestData.Order1.ID.value;
+            var request = new UpdateOrderRequest(0);
+
+            // Act
+            var result = (ActionResult)await _OrdersController.UpdateOrder(orderID, request);
+
+            // Assert
+            var actionResult = Assert.IsType<BadRequestObjectResult>(result);
         }
     }
 }

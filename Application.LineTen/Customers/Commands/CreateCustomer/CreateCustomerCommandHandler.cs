@@ -1,7 +1,11 @@
-﻿using Application.LineTen.Common.Interfaces;
+﻿using Application.LineTen.Common;
+using Application.LineTen.Common.Interfaces;
 using Application.LineTen.Customers.DTOs;
+using Application.LineTen.Customers.Exceptions;
 using Application.LineTen.Customers.Interfaces;
-using Domain.LineTen.Customers;
+using Domain.LineTen.Entities;
+using Domain.LineTen.Validation;
+using Domain.LineTen.ValueObjects.Customers;
 using MediatR;
 
 namespace Application.LineTen.Customers.Commands.CreateCustomer
@@ -27,6 +31,14 @@ namespace Application.LineTen.Customers.Commands.CreateCustomer
                 Phone = request.Phone,
                 Email = request.Email
             };
+
+            var validator = new CustomerValidator();
+            var result = validator.Validate(customer);
+            if (!result.IsValid)
+            {
+                throw new CustomerValidationException(ValidationExceptionMessage.Message(result.Errors));
+            }
+
             _customersRepository.Create(customer);
             await _unitOfWork.SaveChangesAsync();
             return CustomerDTO.FromCustomer(customer);

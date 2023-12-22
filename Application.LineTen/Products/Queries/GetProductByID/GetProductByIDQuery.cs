@@ -1,5 +1,5 @@
 ﻿using Application.LineTen.Products.DTOs;
-using Domain.LineTen.Products;
+using Domain.LineTen.ValueObjects.Products;
 using MediatR;
 
 namespace Application.LineTen.Products.Queries.GetProductByID

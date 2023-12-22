@@ -1,5 +1,4 @@
-﻿using Domain.LineTen.Products;
-using Persistence.LineTen.Repositories;
+﻿using Persistence.LineTen.Repositories;
 
 namespace Persistence.LineTen.Tests.Products
 {

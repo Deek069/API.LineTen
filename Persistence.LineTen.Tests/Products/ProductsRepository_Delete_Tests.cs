@@ -1,6 +1,4 @@
-﻿using Domain.LineTen.Products;
-using Persistence.LineTen.Repositories;
-using System.Runtime.CompilerServices;
+﻿using Persistence.LineTen.Repositories;
 
 namespace Persistence.LineTen.Tests.Products
 {

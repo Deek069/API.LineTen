@@ -1,9 +1,10 @@
 ﻿using Moq;
-using Domain.LineTen.Orders;
 using Application.LineTen.Orders.Commands.UpdateOrder;
 using Application.LineTen.Orders.Interfaces;
 using Application.LineTen.Common.Interfaces;
 using Application.LineTen.Orders.Exceptions;
+using Domain.LineTen.Entities;
+using Domain.LineTen.ValueObjects.Orders;
 
 namespace Application.LineTen.Tests.Orders.Commands
 {
@@ -68,6 +69,33 @@ namespace Application.LineTen.Tests.Orders.Commands
                 Assert.Fail("OrderNotFoundException not throw.");
             }
             catch (OrderNotFoundException ox)
+            {
+                _ordersRepoMock.Verify(repo => repo.Update(It.IsAny<Order>()), Times.Never);
+                _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail($"An exception occurred: {ex.Message}");
+            }
+        }
+
+        [Fact]
+        public async Task Handler_Should_ThrowException_WhenInvalidDataProvided()
+        {
+            try
+            {
+                // Arrange
+                var command = new UpdateOrderCommand(_ordersTestData.Order1.ID.value, 0);
+
+                _ordersRepoMock.Setup(repo => repo.GetById(_ordersTestData.Order1.ID)).Returns(_ordersTestData.Order1);
+
+                // Act
+                await _handler.Handle(command, default);
+
+                // Assert
+                Assert.Fail("OrderValidationException not thrown.");
+            }
+            catch (OrderValidationException ox)
             {
                 _ordersRepoMock.Verify(repo => repo.Update(It.IsAny<Order>()), Times.Never);
                 _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);

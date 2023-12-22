@@ -1,7 +1,6 @@
 ﻿using Application.LineTen.Products.DTOs;
 using Application.LineTen.Products.Exceptions;
 using Application.LineTen.Products.Interfaces;
-using Domain.LineTen.Products;
 using MediatR;
 
 namespace Application.LineTen.Products.Queries.GetProductByID

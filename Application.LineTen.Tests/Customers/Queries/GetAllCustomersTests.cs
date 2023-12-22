@@ -1,8 +1,8 @@
 ﻿using Moq;
-using Domain.LineTen.Customers;
 using Application.LineTen.Customers.Queries.GetAllCustomers;
 using Application.LineTen.Customers.Interfaces;
 using Application.LineTen.Customers.DTOs;
+using Domain.LineTen.Entities;
 
 namespace Application.LineTen.Tests.Customers.Queries
 {

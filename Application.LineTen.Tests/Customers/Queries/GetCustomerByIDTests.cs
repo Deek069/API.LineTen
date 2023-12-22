@@ -1,9 +1,9 @@
 ﻿using Moq;
-using Domain.LineTen.Customers;
 using Application.LineTen.Customers.Queries.GetCustomerByID;
 using Application.LineTen.Customers.Interfaces;
 using Application.LineTen.Customers.DTOs;
 using Application.LineTen.Customers.Exceptions;
+using Domain.LineTen.ValueObjects.Customers;
 
 namespace Application.LineTen.Tests.Customers.Queries
 {

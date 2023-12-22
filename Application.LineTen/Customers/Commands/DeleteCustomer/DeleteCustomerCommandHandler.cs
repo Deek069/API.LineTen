@@ -1,7 +1,7 @@
 ﻿using Application.LineTen.Common.Interfaces;
 using Application.LineTen.Customers.Exceptions;
 using Application.LineTen.Customers.Interfaces;
-using Domain.LineTen.Customers;
+using Domain.LineTen.ValueObjects.Customers;
 using MediatR;
 
 namespace Application.LineTen.Customers.Commands.DeleteCustomer

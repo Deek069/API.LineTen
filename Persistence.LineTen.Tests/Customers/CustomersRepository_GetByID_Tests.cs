@@ -1,4 +1,4 @@
-﻿using Domain.LineTen.Customers;
+﻿using Domain.LineTen.ValueObjects.Customers;
 using Persistence.LineTen.Repositories;
 
 namespace Persistence.LineTen.Tests.Customers

@@ -1,7 +1,7 @@
 ﻿using Application.LineTen.Common.Interfaces;
 using Application.LineTen.Products.Exceptions;
 using Application.LineTen.Products.Interfaces;
-using Domain.LineTen.Products;
+using Domain.LineTen.ValueObjects.Products;
 using MediatR;
 
 namespace Application.LineTen.Products.Commands.DeleteProduct

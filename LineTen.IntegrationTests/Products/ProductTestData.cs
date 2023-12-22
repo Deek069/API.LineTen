@@ -1,5 +1,4 @@
 ﻿using Application.LineTen.Products.Commands.CreateProduct;
-using Domain.LineTen.Products;
 
 namespace LineTen.IntegrationTests.Products
 {

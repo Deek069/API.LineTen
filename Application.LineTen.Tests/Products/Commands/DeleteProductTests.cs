@@ -1,9 +1,10 @@
 ﻿using Moq;
-using Domain.LineTen.Products;
 using Application.LineTen.Products.Commands.DeleteProduct;
 using Application.LineTen.Products.Interfaces;
 using Application.LineTen.Common.Interfaces;
 using Application.LineTen.Products.Exceptions;
+using Domain.LineTen.Entities;
+using Domain.LineTen.ValueObjects.Products;
 
 namespace Application.LineTen.Tests.Products.Commands
 {

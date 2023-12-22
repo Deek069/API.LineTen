@@ -1,4 +1,4 @@
-﻿namespace Domain.LineTen.Products
+﻿namespace Domain.LineTen.ValueObjects.Products
 {
     public sealed record ProductID(Guid value)
     {

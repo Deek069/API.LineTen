@@ -1,7 +1,7 @@
 ﻿using Application.LineTen.Orders.Interfaces;
 using Application.LineTen.Orders.DTOs;
 using MediatR;
-using Domain.LineTen.Orders;
+using Domain.LineTen.ValueObjects.Orders;
 using Application.LineTen.Orders.Exceptions;
 
 namespace Application.LineTen.Orders.Queries.GetOrderSummary

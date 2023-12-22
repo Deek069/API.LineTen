@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Domain.LineTen.Customers;
-using Domain.LineTen.Products;
-using Domain.LineTen.Orders;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
+using Domain.LineTen.Entities;
 
 namespace Persistence.LineTen
 {

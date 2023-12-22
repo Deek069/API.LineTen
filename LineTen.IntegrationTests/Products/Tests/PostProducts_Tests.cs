@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using System.Net;
 using System.Text;
 using System.Text.Json;
+using Application.LineTen.Products.Commands.CreateProduct;
 
 namespace LineTen.IntegrationTests.Products.Tests
 {
@@ -28,6 +29,21 @@ namespace LineTen.IntegrationTests.Products.Tests
             Assert.Equal(expected: testData.CreateProductCommand1.Name, actual: newProduct.Name);
             Assert.Equal(expected: testData.CreateProductCommand1.Description, actual: newProduct.Description);
             Assert.Equal(expected: testData.CreateProductCommand1.SKU, actual: newProduct.SKU);
+        }
+
+        [Fact]
+        public async Task PostProduct_Should_ReturnBadRequest_WhenInvalidDataProvided()
+        {
+            // Arrange
+            var command = new CreateProductCommand("", "", "");
+
+            // Act
+            var jsonContent = JsonSerializer.Serialize(command);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+            var response = await TestClient.PostAsync("Products", content);
+
+            // Assert
+            Assert.Equal(expected: HttpStatusCode.BadRequest, actual: response.StatusCode);
         }
     }
 }

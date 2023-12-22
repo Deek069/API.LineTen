@@ -1,4 +1,4 @@
-﻿namespace Domain.LineTen.Orders
+﻿namespace Domain.LineTen.ValueObjects.Orders
 {
     public sealed record OrderID(Guid value)
     {

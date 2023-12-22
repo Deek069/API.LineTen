@@ -1,5 +1,5 @@
 ﻿using Application.LineTen.Orders.DTOs;
-using Domain.LineTen.Orders;
+using Domain.LineTen.ValueObjects.Orders;
 using System.Net;
 using System.Net.Http.Json;
 

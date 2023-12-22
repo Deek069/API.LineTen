@@ -1,8 +1,9 @@
 ﻿using Domain.LineTen.Common.Interfaces;
-using Domain.LineTen.Customers;
-using Domain.LineTen.Products;
+using Domain.LineTen.ValueObjects.Customers;
+using Domain.LineTen.ValueObjects.Orders;
+using Domain.LineTen.ValueObjects.Products;
 
-namespace Domain.LineTen.Orders
+namespace Domain.LineTen.Entities
 {
     public sealed class Order : IAuditableEntity
     {

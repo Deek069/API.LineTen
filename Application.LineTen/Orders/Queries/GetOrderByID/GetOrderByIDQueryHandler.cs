@@ -1,7 +1,7 @@
 ﻿using Application.LineTen.Orders.DTOs;
 using Application.LineTen.Orders.Exceptions;
 using Application.LineTen.Orders.Interfaces;
-using Domain.LineTen.Orders;
+using Domain.LineTen.ValueObjects.Orders;
 using MediatR;
 
 namespace Application.LineTen.Orders.Queries.GetOrderByID

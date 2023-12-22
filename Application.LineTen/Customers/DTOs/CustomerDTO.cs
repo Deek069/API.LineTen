@@ -1,4 +1,4 @@
-﻿using Domain.LineTen.Customers;
+﻿using Domain.LineTen.Entities;
 
 namespace Application.LineTen.Customers.DTOs
 {

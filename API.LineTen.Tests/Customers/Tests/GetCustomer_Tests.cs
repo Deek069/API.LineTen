@@ -1,12 +1,12 @@
 ﻿using API.LineTen.Controllers;
 using Application.LineTen.Customers.DTOs;
 using Application.LineTen.Customers.Queries.GetCustomerByID;
-using Domain.LineTen.Customers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using MediatR;
 using Application.LineTen.Customers.Exceptions;
+using Domain.LineTen.ValueObjects.Customers;
 
 namespace API.LineTen.Tests.Customers.Tests
 {

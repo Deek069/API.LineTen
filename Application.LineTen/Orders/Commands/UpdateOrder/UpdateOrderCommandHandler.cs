@@ -1,7 +1,9 @@
-﻿using Application.LineTen.Common.Interfaces;
+﻿using Application.LineTen.Common;
+using Application.LineTen.Common.Interfaces;
 using Application.LineTen.Orders.Exceptions;
 using Application.LineTen.Orders.Interfaces;
-using Domain.LineTen.Orders;
+using Domain.LineTen.Validation;
+using Domain.LineTen.ValueObjects.Orders;
 using MediatR;
 
 namespace Application.LineTen.Orders.Commands.UpdateOrder
@@ -24,6 +26,14 @@ namespace Application.LineTen.Orders.Commands.UpdateOrder
             if (order == null) throw new OrderNotFoundException(orderID);
 
             order.Status = request.Status;
+
+            var validator = new OrderValidator();
+            var result = validator.Validate(order);
+            if (!result.IsValid)
+            {
+                throw new OrderValidationException(ValidationExceptionMessage.Message(result.Errors));
+            }
+
             _ordersRepository.Update(order);
             await _unitOfWork.SaveChangesAsync();
         }

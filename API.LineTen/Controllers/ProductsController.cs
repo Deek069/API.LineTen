@@ -1,16 +1,11 @@
-﻿using Application.LineTen.Orders.Commands.DeleteOrder;
-using Application.LineTen.Orders.Commands.UpdateOrder;
-using Application.LineTen.Orders.DTOs;
-using Application.LineTen.Orders.Exceptions;
-using Application.LineTen.Orders.Queries.GetOrderSummary;
-using Application.LineTen.Products.Commands.CreateProduct;
+﻿using Application.LineTen.Products.Commands.CreateProduct;
 using Application.LineTen.Products.Commands.DeleteProduct;
 using Application.LineTen.Products.Commands.UpdateProduct;
 using Application.LineTen.Products.DTOs;
 using Application.LineTen.Products.Exceptions;
 using Application.LineTen.Products.Queries.GetAllProducts;
 using Application.LineTen.Products.Queries.GetProductByID;
-using Domain.LineTen.Products;
+using Domain.LineTen.ValueObjects.Products;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,11 +1,11 @@
 ﻿using API.LineTen.Controllers;
 using Application.LineTen.Orders.Commands.DeleteOrder;
-using Domain.LineTen.Orders;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using MediatR;
 using Application.LineTen.Orders.Exceptions;
+using Domain.LineTen.ValueObjects.Orders;
 
 namespace API.LineTen.Tests.Orders.Tests
 {

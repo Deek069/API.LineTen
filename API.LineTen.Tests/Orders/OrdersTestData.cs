@@ -1,6 +1,7 @@
-﻿using Domain.LineTen.Orders;
-using API.LineTen.Tests.Customers;
+﻿using API.LineTen.Tests.Customers;
 using API.LineTen.Tests.Products;
+using Domain.LineTen.Entities;
+using Domain.LineTen.ValueObjects.Orders;
 
 namespace API.LineTen.Tests.Orders
 {

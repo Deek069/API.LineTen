@@ -1,6 +1,4 @@
-﻿using Domain.LineTen.Customers;
-using Domain.LineTen.Orders;
-using Domain.LineTen.Products;
+﻿using Domain.LineTen.ValueObjects.Orders;
 using Persistence.LineTen.Repositories;
 
 namespace Persistence.LineTen.Tests.Orders

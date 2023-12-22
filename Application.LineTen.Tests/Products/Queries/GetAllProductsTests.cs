@@ -1,8 +1,8 @@
 ﻿using Moq;
-using Domain.LineTen.Products;
 using Application.LineTen.Products.Queries.GetAllProducts;
 using Application.LineTen.Products.Interfaces;
 using Application.LineTen.Products.DTOs;
+using Domain.LineTen.Entities;
 
 namespace Application.LineTen.Tests.Products.Queries
 {

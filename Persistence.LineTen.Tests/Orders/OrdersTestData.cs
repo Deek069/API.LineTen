@@ -1,8 +1,9 @@
 ﻿using Persistence.LineTen.Tests.Customers;
 using Persistence.LineTen.Tests.Products;
-using Domain.LineTen.Orders;
 using Application.LineTen.Common.Interfaces;
 using Persistence.LineTen.Repositories;
+using Domain.LineTen.Entities;
+using Domain.LineTen.ValueObjects.Orders;
 
 namespace Persistence.LineTen.Tests.Orders
 {

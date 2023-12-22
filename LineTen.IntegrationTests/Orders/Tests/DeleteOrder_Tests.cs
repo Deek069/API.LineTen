@@ -1,7 +1,7 @@
 ﻿using Application.LineTen.Orders.DTOs;
 using System.Net.Http.Json;
 using System.Net;
-using Domain.LineTen.Orders;
+using Domain.LineTen.ValueObjects.Orders;
 
 namespace LineTen.IntegrationTests.Orders.Tests
 {

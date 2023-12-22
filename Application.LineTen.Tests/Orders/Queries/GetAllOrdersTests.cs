@@ -1,7 +1,7 @@
 ﻿using Application.LineTen.Orders.DTOs;
 using Application.LineTen.Orders.Interfaces;
 using Application.LineTen.Orders.Queries.GetAllOrders;
-using Domain.LineTen.Orders;
+using Domain.LineTen.Entities;
 using Moq;
 
 namespace Application.LineTen.Tests.Orders.Queries

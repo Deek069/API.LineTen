@@ -1,5 +1,6 @@
 ﻿using Application.LineTen.Customers.Interfaces;
-using Domain.LineTen.Customers;
+using Domain.LineTen.Entities;
+using Domain.LineTen.ValueObjects.Customers;
 
 namespace Persistence.LineTen.Repositories
 {

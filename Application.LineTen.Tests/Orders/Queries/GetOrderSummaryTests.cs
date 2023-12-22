@@ -3,7 +3,7 @@ using Application.LineTen.Orders.Exceptions;
 using Application.LineTen.Orders.Interfaces;
 using Application.LineTen.Orders.Queries.GetOrderByID;
 using Application.LineTen.Orders.Queries.GetOrderSummary;
-using Domain.LineTen.Orders;
+using Domain.LineTen.ValueObjects.Orders;
 using Moq;
 using System;
 using System.Collections.Generic;

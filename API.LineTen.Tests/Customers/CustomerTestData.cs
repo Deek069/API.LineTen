@@ -1,4 +1,5 @@
-﻿using Domain.LineTen.Customers;
+﻿using Domain.LineTen.Entities;
+using Domain.LineTen.ValueObjects.Customers;
 
 namespace API.LineTen.Tests.Customers
 {

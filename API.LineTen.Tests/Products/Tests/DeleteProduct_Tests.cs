@@ -1,11 +1,11 @@
 ﻿using API.LineTen.Controllers;
 using Application.LineTen.Products.Commands.DeleteProduct;
-using Domain.LineTen.Products;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using MediatR;
 using Application.LineTen.Products.Exceptions;
+using Domain.LineTen.ValueObjects.Products;
 
 namespace API.LineTen.Tests.Products.Tests
 {

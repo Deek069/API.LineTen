@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using Domain.LineTen.Products;
+using Domain.LineTen.ValueObjects.Products;
 
 namespace LineTen.IntegrationTests.Products.Tests
 {

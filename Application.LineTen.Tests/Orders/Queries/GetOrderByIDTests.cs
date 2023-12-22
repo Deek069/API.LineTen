@@ -1,9 +1,9 @@
 ﻿using Moq;
-using Domain.LineTen.Orders;
 using Application.LineTen.Orders.Queries.GetOrderByID;
 using Application.LineTen.Orders.Interfaces;
 using Application.LineTen.Orders.DTOs;
 using Application.LineTen.Orders.Exceptions;
+using Domain.LineTen.ValueObjects.Orders;
 
 namespace Application.LineTen.Tests.Orders.Queries
 {

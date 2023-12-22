@@ -1,14 +1,19 @@
-﻿using Domain.LineTen.Orders;
+﻿using Application.LineTen.Common.Interfaces;
 using Application.LineTen.Customers.Interfaces;
-using Application.LineTen.Orders.Interfaces;
-using Application.LineTen.Products.Interfaces;
-using Application.LineTen.Orders.DTOs;
-using Application.LineTen.Common.Interfaces;
-using MediatR;
-using Domain.LineTen.Customers;
-using Domain.LineTen.Products;
 using Application.LineTen.Customers.Exceptions;
+using Application.LineTen.Orders.Interfaces;
+using Application.LineTen.Orders.DTOs;
+using Application.LineTen.Products.Interfaces;
 using Application.LineTen.Products.Exceptions;
+using Domain.LineTen.Entities;
+using Domain.LineTen.ValueObjects.Customers;
+using Domain.LineTen.ValueObjects.Products;
+
+using MediatR;
+using Domain.LineTen.ValueObjects.Orders;
+using Domain.LineTen.Validation;
+using Application.LineTen.Orders.Exceptions;
+using Application.LineTen.Common;
 
 namespace Application.LineTen.Orders.Commands.CreateOrder
 {
@@ -51,6 +56,14 @@ namespace Application.LineTen.Orders.Commands.CreateOrder
                 ProductID = productID,
                 Status = OrderStatus.Pending,
             };
+
+            var validator = new OrderValidator();
+            var result = validator.Validate(order);
+            if (!result.IsValid)
+            {
+                throw new OrderValidationException(ValidationExceptionMessage.Message(result.Errors));
+            }
+
             _ordersRepository.Create(order);
             await _unitOfWork.SaveChangesAsync();
             return OrderDTO.FromOrder(order);

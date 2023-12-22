@@ -1,5 +1,4 @@
-﻿using Domain.LineTen.Customers;
-using MediatR;
+﻿using MediatR;
 
 namespace Application.LineTen.Customers.Commands.DeleteCustomer
 {

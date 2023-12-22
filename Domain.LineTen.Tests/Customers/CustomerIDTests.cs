@@ -1,4 +1,4 @@
-﻿using Domain.LineTen.Customers;
+﻿using Domain.LineTen.ValueObjects.Customers;
 
 namespace Domain.LineTen.Tests.Customers
 {

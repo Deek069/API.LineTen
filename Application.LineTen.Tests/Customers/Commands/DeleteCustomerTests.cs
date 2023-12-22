@@ -1,10 +1,11 @@
 ﻿using Moq;
-using Domain.LineTen.Customers;
 using Application.LineTen.Customers.Commands.DeleteCustomer;
 using Application.LineTen.Customers.Interfaces;
 using Application.LineTen.Common.Interfaces;
 using System.Linq.Expressions;
 using Application.LineTen.Customers.Exceptions;
+using Domain.LineTen.Entities;
+using Domain.LineTen.ValueObjects.Customers;
 
 namespace Application.LineTen.Tests.Customers.Commands
 {

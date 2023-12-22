@@ -1,8 +1,8 @@
 ﻿using System.Net;
-using Domain.LineTen.Orders;
 using System.Text;
 using Application.LineTen.Orders.Commands.UpdateOrder;
 using System.Text.Json;
+using Domain.LineTen.ValueObjects.Orders;
 
 namespace LineTen.IntegrationTests.Orders.Tests
 {
@@ -43,6 +43,27 @@ namespace LineTen.IntegrationTests.Orders.Tests
 
             // Assert
             Assert.Equal(expected: HttpStatusCode.NotFound, actual: response.StatusCode);
+        }
+
+        [Fact]
+        public async Task PostOrder_Should_ReturnBadRequest_WhenInvalidDataProvided()
+        {
+            // Arrange
+            var testData = new OrdersTestData();
+            await testData.CreateTestDataAsync(TestClient);
+
+            var methods = new OrderMethods(TestClient);
+            var newOrder = await methods.CreateOrder(testData.CreateOrderCommand1);
+            var orderID = newOrder.ID;
+            var request = new UpdateOrderRequest(0);
+
+            // Act
+            var jsonContent = JsonSerializer.Serialize(request);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+            var response = await TestClient.PutAsync($"Orders/{orderID}", content);
+
+            // Assert
+            Assert.Equal(expected: HttpStatusCode.BadRequest, actual: response.StatusCode);
         }
     }
 }

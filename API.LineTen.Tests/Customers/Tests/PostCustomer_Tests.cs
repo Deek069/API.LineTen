@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using MediatR;
+using Application.LineTen.Customers.Exceptions;
 
 namespace API.LineTen.Tests.Customers.Tests
 {
@@ -48,6 +49,21 @@ namespace API.LineTen.Tests.Customers.Tests
             Assert.Equal(expected: _customerTestData.Customer1.LastName, actual: customer.LastName);
             Assert.Equal(expected: _customerTestData.Customer1.Phone, actual: customer.Phone);
             Assert.Equal(expected: _customerTestData.Customer1.Email, actual: customer.Email);
+        }
+
+        [Fact]
+        public async Task PostCustomer_Should_ReturnBadRequest_WhenInvalidDataIsProvided()
+        {
+            // Arrange
+            _mockMediator.Setup(x => x.Send(It.IsAny<CreateCustomerCommand>(), It.IsAny<CancellationToken>()))
+                        .Throws(new CustomerValidationException("Invalid Data"));
+            var command = new CreateCustomerCommand("", "", "", "");
+
+            // Act
+            var result = (ActionResult)await _customersController.CreateCustomer(command);
+
+            // Assert
+            var actionResult = Assert.IsType<BadRequestObjectResult>(result);
         }
     }
 }

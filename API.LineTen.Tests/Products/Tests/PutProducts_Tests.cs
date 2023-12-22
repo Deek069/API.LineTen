@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using MediatR;
-using Domain.LineTen.Products;
 using Application.LineTen.Products.Exceptions;
+using Domain.LineTen.ValueObjects.Products;
 
 namespace API.LineTen.Tests.Products.Tests
 {
@@ -62,6 +62,22 @@ namespace API.LineTen.Tests.Products.Tests
 
             // Assert
             var actionResult = Assert.IsType<NotFoundObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task PutProduct_Should_ReturnBadRequest_WhenInvalidDataProvided()
+        {
+            // Arrange
+            var productID = _ProductsTestData.Product1.ID.value;
+            _mockMediator.Setup(x => x.Send(It.IsAny<UpdateProductCommand>(), It.IsAny<CancellationToken>()))
+                        .Throws(new ProductValidationException("Invalid Data"));
+            var request = new UpdateProductRequest("", "", "");
+
+            // Act
+            var result = (ActionResult)await _ProductsController.UpdateProduct(productID, request);
+
+            // Assert
+            var actionResult = Assert.IsType<BadRequestObjectResult>(result);
         }
     }
 }

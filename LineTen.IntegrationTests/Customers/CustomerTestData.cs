@@ -1,6 +1,4 @@
 ﻿using Application.LineTen.Customers.Commands.CreateCustomer;
-using Application.LineTen.Customers.DTOs;
-using Domain.LineTen.Customers;
 
 namespace LineTen.IntegrationTests.Customers
 {

@@ -1,6 +1,6 @@
-﻿using Domain.LineTen.Orders;
+﻿using Domain.LineTen.ValueObjects.Customers;
 
-namespace Domain.LineTen.Customers
+namespace Domain.LineTen.Entities
 {
     public sealed class Customer
     {
