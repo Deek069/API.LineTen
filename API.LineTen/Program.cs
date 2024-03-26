@@ -80,8 +80,7 @@ app.UseHttpsRedirection();
 
 // ---------------------- Api Authorisation ---------------------------
 app.UseMiddleware<ApiKeyAuthMiddleware>();
-
 app.UseAuthorization();
-app.MapControllers();
 
+app.MapControllers();
 app.Run();

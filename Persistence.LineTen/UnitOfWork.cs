@@ -22,8 +22,8 @@ namespace Persistence.LineTen
 
         private void UpdateAuditableEntities()
         {
-            IEnumerable<EntityEntry<IAuditableEntity>> entries = _dbContext.ChangeTracker.Entries<IAuditableEntity>();
-            foreach (EntityEntry<IAuditableEntity> entry in entries)
+            var entries = _dbContext.ChangeTracker.Entries<IAuditableEntity>();
+            foreach (var entry in entries)
             {
                 if (entry.State == EntityState.Added)
                 {

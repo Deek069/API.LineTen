@@ -33,7 +33,7 @@ namespace API.LineTen.Controllers
             try
             {
                 var result = await _mediator.Send(command);
-                return CreatedAtAction(nameof(CreateProduct), new { id = result.ID }, result);
+                return CreatedAtAction(nameof(GetByID), new { id = result.ID }, result);
             }
             catch (Exception ex)
             {

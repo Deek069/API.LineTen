@@ -16,6 +16,7 @@ services:
       - SA_PASSWORD=u2GUuExnKeQ3PZtYWeAa
     networks:
       - dlk-lineten-network
+
   api.lineten:
     container_name: dlk-lineten-api-app
     image: ${DOCKER_REGISTRY-}apilineten

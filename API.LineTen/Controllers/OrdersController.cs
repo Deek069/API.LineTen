@@ -34,7 +34,7 @@ namespace API.LineTen.Controllers
             try
             {
                 var result = await _mediator.Send(command);
-                return CreatedAtAction(nameof(CreateOrder), new { id = result.ID }, result);
+                return CreatedAtAction(nameof(GetOrderSummary), new { id = result.ID }, result);
             }
             catch (ProductNotFoundException px)
             {
